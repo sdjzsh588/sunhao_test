@@ -104,7 +104,7 @@ const timing = linearTiming({ durationInFrames: TRANSITION });
 
 // Background music: fade in, sit audibly under narration, fade out at the end.
 const bgmVolume = (total: number, hasVoiceover: boolean) => (f: number) => {
-  const base = hasVoiceover ? 0.26 : 0.55;
+  const base = hasVoiceover ? 0.1 : 0.5;
   const fadeIn = 30;
   const fadeOut = 45;
   let v = base;

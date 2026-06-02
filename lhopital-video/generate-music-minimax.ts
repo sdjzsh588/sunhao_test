@@ -26,8 +26,8 @@ const PROMPT =
   "video. Soft piano and warm pads, gentle and unobtrusive, relaxed steady " +
   "mood, light percussion, no vocals. Sits quietly under a spoken narration.";
 
-// On music-2.6, `instrumental: true` produces a vocal-free bed and the lyrics
-// field is not required (and must be omitted — sending it forces a sung song).
+// On music-2.6 the flag is `is_instrumental` (not `instrumental`). With it set,
+// the API produces a vocal-free bed and the `lyrics` field is not required.
 const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, {
   method: "POST",
   headers: {
@@ -37,8 +37,9 @@ const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, 
   body: JSON.stringify({
     model: MODEL,
     prompt: PROMPT,
-    instrumental: true, // no vocals (supported on music-2.6)
+    is_instrumental: true, // no vocals (supported on music-2.6)
     audio_setting: { sample_rate: 44100, bitrate: 256000, format: "mp3" },
+    output_format: "hex", // return audio as a hex string (decoded below)
   }),
 });
 
