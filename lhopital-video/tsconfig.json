@@ -11,5 +11,10 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true
   },
-  "exclude": ["remotion.config.ts", "generate-voiceover.ts", "scripts"]
+  "exclude": [
+    "remotion.config.ts",
+    "generate-voiceover.ts",
+    "generate-music.ts",
+    "scripts"
+  ]
 }

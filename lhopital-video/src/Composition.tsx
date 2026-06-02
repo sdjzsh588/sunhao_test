@@ -43,12 +43,18 @@ const PRESENTATIONS = [
 export type Props = {
   sceneDurations: number[];
   voiceoverFiles: string[] | null;
+  bgmFile: string;
 };
 
 export const defaultProps: Props = {
   sceneDurations: MIN_SCENE,
   voiceoverFiles: null,
+  bgmFile: "bgm.wav",
 };
+
+// Candidate background-music files, preferred first (AI-generated mp3 from
+// ElevenLabs, then the synthesized wav fallback).
+const BGM_CANDIDATES = ["bgm.mp3", "bgm.wav"];
 
 const totalFromScenes = (scenes: number[]) =>
   scenes.reduce((a, b) => a + b, 0) - TRANSITION * (scenes.length - 1);
@@ -70,6 +76,14 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async () => {
   const resolved = await Promise.all(VOICEOVER.map((l) => resolveLine(l.id)));
   const hasVoiceover = resolved.every((r) => r !== null);
 
+  let bgmFile = "bgm.wav";
+  for (const candidate of BGM_CANDIDATES) {
+    if (await getAudioDuration(staticFile(candidate))) {
+      bgmFile = candidate;
+      break;
+    }
+  }
+
   const sceneDurations = hasVoiceover
     ? resolved.map((r, i) =>
         Math.max(Math.ceil(r!.dur * FPS) + HEAD_PAD + TAIL_PAD, MIN_SCENE_VO[i]),
@@ -81,6 +95,7 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async () => {
     props: {
       sceneDurations,
       voiceoverFiles: hasVoiceover ? resolved.map((r) => r!.file) : null,
+      bgmFile,
     },
   };
 };
@@ -101,6 +116,7 @@ const bgmVolume = (total: number, hasVoiceover: boolean) => (f: number) => {
 export const MyComposition: React.FC<Props> = ({
   sceneDurations,
   voiceoverFiles,
+  bgmFile,
 }) => {
   const total = totalFromScenes(sceneDurations);
 
@@ -132,7 +148,7 @@ export const MyComposition: React.FC<Props> = ({
       <Background />
       <TransitionSeries>{children}</TransitionSeries>
       <Audio
-        src={staticFile("bgm.wav")}
+        src={staticFile(bgmFile)}
         loop
         loopVolumeCurveBehavior="extend"
         volume={bgmVolume(total, voiceoverFiles !== null)}
