@@ -12,6 +12,10 @@ music** for the Remotion project in `lhopital-video/` with the MiniMax API, and
 re-rendering the video. The composition auto-detects audio files, so swapping
 audio needs **no React/code changes** — generate the files, then render.
 
+> For editing the **video/composition** itself (scenes, animations, timing),
+> use the `remotion-best-practices` skill. This skill only covers the
+> MiniMax audio generation + re-render loop.
+
 ## Prerequisites (check first)
 
 1. **Network**: the environment must allow host `api.minimax.io`
