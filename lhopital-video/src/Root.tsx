@@ -6,7 +6,11 @@ import {
   defaultProps,
   FPS,
 } from "./Composition";
-import { VietaComposition, VIETA_TOTAL } from "./VietaComposition";
+import {
+  VietaComposition,
+  calculateMetadata as vietaCalculateMetadata,
+  defaultProps as vietaDefaultProps,
+} from "./VietaComposition";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -27,7 +31,9 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
-        durationInFrames={VIETA_TOTAL}
+        durationInFrames={2115}
+        defaultProps={vietaDefaultProps}
+        calculateMetadata={vietaCalculateMetadata}
       />
     </>
   );
