@@ -7,7 +7,7 @@
 //   # optional: pick a multilingual voice id (defaults to "Rachel")
 //   export ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM
 //
-//   node --strip-types generate-voiceover.ts
+//   node --experimental-strip-types generate-voiceover.ts
 //
 // Output: public/voiceover/lhopital/<id>.mp3 — then just re-render:
 //
@@ -15,7 +15,7 @@
 //
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { VOICEOVER, voiceoverFile } from "./src/voiceover/script.ts";
+import { VOICEOVER, voiceoverPath } from "./src/voiceover/script.ts";
 
 const API_KEY = process.env.ELEVENLABS_API_KEY;
 const VOICE_ID = process.env.ELEVENLABS_VOICE_ID ?? "21m00Tcm4TlvDq8ikWAM";
@@ -38,7 +38,7 @@ for (const line of VOICEOVER) {
         Accept: "audio/mpeg",
       },
       body: JSON.stringify({
-        text: line.text,
+        text: line.tts,
         model_id: "eleven_multilingual_v2",
         voice_settings: {
           stability: 0.5,
@@ -55,7 +55,7 @@ for (const line of VOICEOVER) {
   }
 
   const audioBuffer = Buffer.from(await response.arrayBuffer());
-  const outPath = `public/${voiceoverFile(line.id)}`;
+  const outPath = `public/${voiceoverPath(line.id, "mp3")}`;
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, audioBuffer);
   console.log(`saved ${outPath} (${(audioBuffer.length / 1024).toFixed(0)} KB)`);

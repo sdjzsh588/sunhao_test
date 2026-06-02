@@ -16,15 +16,17 @@ import { Rule } from "./scenes/Rule";
 import { Conditions } from "./scenes/Conditions";
 import { Example } from "./scenes/Example";
 import { Outro } from "./scenes/Outro";
-import { VOICEOVER, voiceoverFile } from "./voiceover/script";
+import { VOICEOVER, VOICEOVER_EXTS, voiceoverPath } from "./voiceover/script";
 import { getAudioDuration } from "./voiceover/get-audio-duration";
 
 export const FPS = 30;
 export const TRANSITION = 18; // crossfade / slide length between scenes
 
-// Minimum scene lengths (frames) so the on-screen animations always fit,
-// even when narration is shorter. Used as-is when no voiceover is present.
+// Minimum scene lengths (frames). When narration is present, each scene grows
+// to fit its audio; these floors just guarantee the on-screen animations have
+// room to finish. The no-voiceover fallback uses these as-is.
 const MIN_SCENE = [180, 450, 510, 420, 690, 270];
+const MIN_SCENE_VO = [90, 170, 180, 160, 360, 130];
 
 const HEAD_PAD = 12; // lead-in before a scene's narration starts
 const TAIL_PAD = 24; // breathing room after narration ends
@@ -40,40 +42,46 @@ const PRESENTATIONS = [
 
 export type Props = {
   sceneDurations: number[];
-  hasVoiceover: boolean;
+  voiceoverFiles: string[] | null;
 };
 
 export const defaultProps: Props = {
   sceneDurations: MIN_SCENE,
-  hasVoiceover: false,
+  voiceoverFiles: null,
 };
 
 const totalFromScenes = (scenes: number[]) =>
   scenes.reduce((a, b) => a + b, 0) - TRANSITION * (scenes.length - 1);
 
+// Find the first existing audio file for a scene (wav from espeak, mp3 from
+// ElevenLabs) and return its path + duration, or null if none is present.
+const resolveLine = async (id: string) => {
+  for (const ext of VOICEOVER_EXTS) {
+    const file = voiceoverPath(id, ext);
+    const dur = await getAudioDuration(staticFile(file));
+    if (dur) return { file, dur };
+  }
+  return null;
+};
+
 // Size each scene to its narration (when available); otherwise fall back to the
 // fixed minimums so the video still renders without any audio files.
 export const calculateMetadata: CalculateMetadataFunction<Props> = async () => {
-  const durations = await Promise.all(
-    VOICEOVER.map((line) =>
-      getAudioDuration(staticFile(voiceoverFile(line.id))),
-    ),
-  );
-
-  const hasVoiceover = durations.every((d) => d !== null);
+  const resolved = await Promise.all(VOICEOVER.map((l) => resolveLine(l.id)));
+  const hasVoiceover = resolved.every((r) => r !== null);
 
   const sceneDurations = hasVoiceover
-    ? durations.map((sec, i) =>
-        Math.max(
-          Math.ceil((sec as number) * FPS) + HEAD_PAD + TAIL_PAD,
-          MIN_SCENE[i],
-        ),
+    ? resolved.map((r, i) =>
+        Math.max(Math.ceil(r!.dur * FPS) + HEAD_PAD + TAIL_PAD, MIN_SCENE_VO[i]),
       )
     : MIN_SCENE;
 
   return {
     durationInFrames: totalFromScenes(sceneDurations),
-    props: { sceneDurations, hasVoiceover },
+    props: {
+      sceneDurations,
+      voiceoverFiles: hasVoiceover ? resolved.map((r) => r!.file) : null,
+    },
   };
 };
 
@@ -81,7 +89,7 @@ const timing = linearTiming({ durationInFrames: TRANSITION });
 
 // Background music: fade in, sit low under narration, fade out at the end.
 const bgmVolume = (total: number, hasVoiceover: boolean) => (f: number) => {
-  const base = hasVoiceover ? 0.1 : 0.2;
+  const base = hasVoiceover ? 0.09 : 0.2;
   const fadeIn = 30;
   const fadeOut = 45;
   let v = base;
@@ -92,7 +100,7 @@ const bgmVolume = (total: number, hasVoiceover: boolean) => (f: number) => {
 
 export const MyComposition: React.FC<Props> = ({
   sceneDurations,
-  hasVoiceover,
+  voiceoverFiles,
 }) => {
   const total = totalFromScenes(sceneDurations);
 
@@ -101,9 +109,9 @@ export const MyComposition: React.FC<Props> = ({
     children.push(
       <TransitionSeries.Sequence key={`s${i}`} durationInFrames={sceneDurations[i]}>
         <SceneComp />
-        {hasVoiceover ? (
+        {voiceoverFiles ? (
           <Sequence from={HEAD_PAD}>
-            <Audio src={staticFile(voiceoverFile(VOICEOVER[i].id))} />
+            <Audio src={staticFile(voiceoverFiles[i])} />
           </Sequence>
         ) : null}
       </TransitionSeries.Sequence>,
@@ -127,7 +135,7 @@ export const MyComposition: React.FC<Props> = ({
         src={staticFile("bgm.wav")}
         loop
         loopVolumeCurveBehavior="extend"
-        volume={bgmVolume(total, hasVoiceover)}
+        volume={bgmVolume(total, voiceoverFiles !== null)}
       />
     </AbsoluteFill>
   );
