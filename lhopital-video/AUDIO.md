@@ -29,6 +29,31 @@ npx remotion render LHopital out/lhopital.mp4
 mp3 narration overrides the wav files, and `bgm.mp3` overrides `bgm.wav`, so the
 render picks up the ElevenLabs audio with no code changes.
 
+## MiniMax (native Mandarin voice + music)
+
+Different host and auth from ElevenLabs: it needs **two** values — an API key
+(Bearer) **and** a GroupId. Allow `api.minimax.io` in Network access, then:
+
+```bash
+export MINIMAX_API_KEY=...
+export MINIMAX_GROUP_ID=...
+# optional Mandarin voice id from your MiniMax console:
+# export MINIMAX_VOICE_ID="Chinese (Mandarin)_Warm_Bestie"
+
+node --experimental-strip-types generate-voiceover-minimax.ts  # -> *.mp3 narration
+node --experimental-strip-types generate-music-minimax.ts       # -> public/bgm.mp3
+
+npx remotion render LHopital out/lhopital.mp4
+```
+
+Notes:
+- TTS endpoint `POST /v1/t2a_v2`; music endpoint `POST /v1/music_generation`
+  with `instrumental: true` (no vocals).
+- MiniMax returns audio as a **hex-encoded** string inside JSON; the scripts
+  decode it to mp3 for you.
+- Music model defaults to `music-2.6-free`. China host alternative:
+  `export MINIMAX_BASE=https://api.minimaxi.chat`.
+
 ## Offline fallbacks (no network / no API key)
 
 ```bash
