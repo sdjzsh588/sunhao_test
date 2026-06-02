@@ -13,7 +13,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 
 const API_KEY = process.env.MINIMAX_API_KEY;
 const GROUP_ID = process.env.MINIMAX_GROUP_ID;
-const MODEL = process.env.MINIMAX_MUSIC_MODEL ?? "music-2.6-free";
+const MODEL = process.env.MINIMAX_MUSIC_MODEL ?? "music-2.6";
 const BASE = process.env.MINIMAX_BASE ?? "https://api.minimax.io";
 
 if (!API_KEY || !GROUP_ID) {
@@ -26,11 +26,8 @@ const PROMPT =
   "video. Soft piano and warm pads, gentle and unobtrusive, relaxed steady " +
   "mood, light percussion, no vocals. Sits quietly under a spoken narration.";
 
-// The music API requires a `lyrics` field. To keep the bed purely instrumental
-// we pass only structural section tags (no sung words), alongside the
-// `instrumental` flag.
-const LYRICS = "[Intro]\n[Verse]\n[Bridge]\n[Outro]";
-
+// On music-2.6, `instrumental: true` produces a vocal-free bed and the lyrics
+// field is not required (and must be omitted — sending it forces a sung song).
 const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, {
   method: "POST",
   headers: {
@@ -40,8 +37,7 @@ const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, 
   body: JSON.stringify({
     model: MODEL,
     prompt: PROMPT,
-    lyrics: LYRICS,
-    instrumental: true, // no vocals (supported on music-2.6 / music-2.6-free)
+    instrumental: true, // no vocals (supported on music-2.6)
     audio_setting: { sample_rate: 44100, bitrate: 256000, format: "mp3" },
   }),
 });

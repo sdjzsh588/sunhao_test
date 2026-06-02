@@ -21,7 +21,7 @@ const API_KEY = process.env.MINIMAX_API_KEY;
 const GROUP_ID = process.env.MINIMAX_GROUP_ID;
 const VOICE_ID =
   process.env.MINIMAX_VOICE_ID ?? "Chinese (Mandarin)_Warm_Bestie";
-const MODEL = process.env.MINIMAX_TTS_MODEL ?? "speech-02-hd";
+const MODEL = process.env.MINIMAX_TTS_MODEL ?? "speech-2.8-hd";
 const BASE = process.env.MINIMAX_BASE ?? "https://api.minimax.io";
 
 if (!API_KEY || !GROUP_ID) {
@@ -45,8 +45,8 @@ for (const line of VOICEOVER) {
       language_boost: "Chinese",
       voice_setting: { voice_id: VOICE_ID, speed: 1.0, vol: 1.0, pitch: 0 },
       audio_setting: {
-        sample_rate: 32000,
-        bitrate: 128000,
+        sample_rate: 44100,
+        bitrate: 256000,
         format: "mp3",
         channel: 1,
       },
