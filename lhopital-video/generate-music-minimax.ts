@@ -26,6 +26,11 @@ const PROMPT =
   "video. Soft piano and warm pads, gentle and unobtrusive, relaxed steady " +
   "mood, light percussion, no vocals. Sits quietly under a spoken narration.";
 
+// The music API requires a `lyrics` field. To keep the bed purely instrumental
+// we pass only structural section tags (no sung words), alongside the
+// `instrumental` flag.
+const LYRICS = "[Intro]\n[Verse]\n[Bridge]\n[Outro]";
+
 const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, {
   method: "POST",
   headers: {
@@ -35,6 +40,7 @@ const response = await fetch(`${BASE}/v1/music_generation?GroupId=${GROUP_ID}`, 
   body: JSON.stringify({
     model: MODEL,
     prompt: PROMPT,
+    lyrics: LYRICS,
     instrumental: true, // no vocals (supported on music-2.6 / music-2.6-free)
     audio_setting: { sample_rate: 44100, bitrate: 256000, format: "mp3" },
   }),
