@@ -87,9 +87,9 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async () => {
 
 const timing = linearTiming({ durationInFrames: TRANSITION });
 
-// Background music: fade in, sit low under narration, fade out at the end.
+// Background music: fade in, sit audibly under narration, fade out at the end.
 const bgmVolume = (total: number, hasVoiceover: boolean) => (f: number) => {
-  const base = hasVoiceover ? 0.09 : 0.2;
+  const base = hasVoiceover ? 0.26 : 0.55;
   const fadeIn = 30;
   const fadeOut = 45;
   let v = base;

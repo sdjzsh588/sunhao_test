@@ -14,7 +14,7 @@ import { dirname } from "node:path";
 import { VOICEOVER, voiceoverPath } from "../src/voiceover/script.ts";
 
 const VOICE = "cmn"; // Mandarin Chinese
-const WPM = "260"; // words/min — espeak Mandarin is slow, so push the pace up
+const WPM = "235"; // words/min — brisk but still clear for Mandarin
 const PITCH = "45"; // 0-99, slightly lower for a calmer tone
 
 for (const line of VOICEOVER) {
