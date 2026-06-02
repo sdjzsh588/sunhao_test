@@ -65,6 +65,15 @@ export const V: React.FC<{ children: React.ReactNode; color?: string }> = ({
   </span>
 );
 
+// Superscript (e.g. exponents) and subscript (e.g. root indices).
+export const Sup: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <sup style={{ fontSize: "0.55em", verticalAlign: "super" }}>{children}</sup>
+);
+
+export const Sub: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <sub style={{ fontSize: "0.6em", verticalAlign: "sub" }}>{children}</sub>
+);
+
 // "lim" with a subscript below it.
 export const Lim: React.FC<{ sub: React.ReactNode; fontSize: number }> = ({
   sub,

@@ -6,6 +6,7 @@ import {
   defaultProps,
   FPS,
 } from "./Composition";
+import { VietaComposition, VIETA_TOTAL } from "./VietaComposition";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -19,6 +20,14 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={2430}
         defaultProps={defaultProps}
         calculateMetadata={calculateMetadata}
+      />
+      <Composition
+        id="Vieta"
+        component={VietaComposition}
+        fps={30}
+        width={1920}
+        height={1080}
+        durationInFrames={VIETA_TOTAL}
       />
     </>
   );
