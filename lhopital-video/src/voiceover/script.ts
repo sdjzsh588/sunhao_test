@@ -38,8 +38,9 @@ export const VOICEOVER: VoiceLine[] = [
   },
 ];
 
-// Candidate extensions, in priority order (espeak writes wav, ElevenLabs mp3).
-export const VOICEOVER_EXTS = ["wav", "mp3"] as const;
+// Candidate extensions, in priority order. mp3 (ElevenLabs / MiniMax API voices)
+// is preferred over the offline wav (Piper/espeak) when both are present.
+export const VOICEOVER_EXTS = ["mp3", "wav"] as const;
 
 export const voiceoverPath = (id: string, ext: string) =>
   `voiceover/lhopital/${id}.${ext}`;
