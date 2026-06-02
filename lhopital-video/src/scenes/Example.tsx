@@ -50,7 +50,7 @@ export const Example: React.FC = () => {
 
   // final answer pops with a spring
   const pop = spring({
-    frame: frame - 360,
+    frame: frame - 285,
     fps,
     config: { damping: 12, stiffness: 120 },
     durationInFrames: 30,
@@ -64,7 +64,7 @@ export const Example: React.FC = () => {
 
       <div style={{ display: "flex", flexDirection: "column", gap: 34 }}>
         <Step
-          delay={24}
+          delay={18}
           tag={<Tag color={COLORS.green}>0/0 型 ✓</Tag>}
         >
           <MathRow fontSize={64} gap={20}>
@@ -87,7 +87,7 @@ export const Example: React.FC = () => {
           </MathRow>
         </Step>
 
-        <Step delay={185}>
+        <Step delay={188}>
           <MathRow fontSize={64} gap={20}>
             <span style={{ fontSize: 56 }}>=</span>
             <Lim sub={<><V>x</V>→0</>} fontSize={64} />
@@ -99,7 +99,7 @@ export const Example: React.FC = () => {
           </MathRow>
         </Step>
 
-        <Step delay={265}>
+        <Step delay={240}>
           <MathRow fontSize={64} gap={20}>
             <span style={{ fontSize: 56 }}>=</span>
             <Fraction num={<>cos&nbsp;0</>} den="1" fontSize={62} />
