@@ -11,6 +11,11 @@ import {
   calculateMetadata as vietaCalculateMetadata,
   defaultProps as vietaDefaultProps,
 } from "./VietaComposition";
+import {
+  KongchengComposition,
+  calculateMetadata as kongchengCalculateMetadata,
+  defaultProps as kongchengDefaultProps,
+} from "./KongchengComposition";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -34,6 +39,16 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={2115}
         defaultProps={vietaDefaultProps}
         calculateMetadata={vietaCalculateMetadata}
+      />
+      <Composition
+        id="Kongcheng"
+        component={KongchengComposition}
+        fps={30}
+        width={1920}
+        height={1080}
+        durationInFrames={2020}
+        defaultProps={kongchengDefaultProps}
+        calculateMetadata={kongchengCalculateMetadata}
       />
     </>
   );
