@@ -14,7 +14,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const API_KEY = process.env.MINIMAX_API_KEY;
 const GROUP_ID = process.env.MINIMAX_GROUP_ID;
 const MODEL = process.env.MINIMAX_MUSIC_MODEL ?? "music-2.6";
-const BASE = process.env.MINIMAX_BASE ?? "https://api.minimax.io";
+const BASE = process.env.MINIMAX_BASE ?? "https://api.minimaxi.com";
 
 if (!API_KEY || !GROUP_ID) {
   console.error("Missing MINIMAX_API_KEY and/or MINIMAX_GROUP_ID.");

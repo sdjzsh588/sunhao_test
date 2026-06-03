@@ -18,9 +18,12 @@ audio needs **no React/code changes** — generate the files, then render.
 
 ## Prerequisites (check first)
 
-1. **Network**: the environment must allow host `api.minimax.io`
-   (web app → environment → Network access → Custom/Full). China host
-   alternative: set `MINIMAX_BASE=https://api.minimaxi.chat`.
+1. **Network**: the environment must allow host `api.minimaxi.com`
+   (web app → environment → Network access → Custom/Full). **Host matters:**
+   this account lives on the `minimaxi.com` platform — `api.minimax.io`
+   (the international host) rejects the same key with `2049 invalid api key`.
+   The scripts default to `https://api.minimaxi.com`; override with
+   `MINIMAX_BASE` if needed.
 2. **Secrets** (env vars): `MINIMAX_API_KEY` **and** `MINIMAX_GROUP_ID`
    (MiniMax needs both — a Bearer key *and* a GroupId). Optional:
    `MINIMAX_VOICE_ID` (defaults to a Mandarin female voice).
@@ -73,15 +76,25 @@ read-aloud version; spell out symbols/numbers for clean pronunciation).
   exports `VOICEOVER_EXTS` — it must be `["mp3", "wav"]`. If `wav` is first,
   `resolveLine()` keeps using the old offline Piper `.wav` and the new MiniMax
   voice never reaches the render (the video sounds unchanged).
-- **`2049 "invalid api key"` is often rate-limiting, not a bad key.** A burst of
-  calls can trip it for everything (even TTS) for several minutes. Retry with
-  backoff (~30s) rather than assuming the key is wrong. The key here is a plain
-  125-char token, not a JWT, so it does not "expire" mid-session.
+- **`2049 "invalid api key"` here almost always means WRONG HOST, not a bad
+  key.** `2049` literally means an auth failure (rate-limit/quota are different
+  codes: `1028/1030`). The key is a valid `sk-` token, but it only authenticates
+  on `api.minimaxi.com` — calling `api.minimax.io` returns `2049` for every
+  endpoint (TTS, music, image). If you suddenly get `2049` everywhere, check the
+  base host first.
 - **File byte-size is NOT proof the audio changed.** Output is ~constant-bitrate
   AAC, so size ≈ bitrate × duration. Changing the music or BGM volume barely
   moves the byte count when the duration is unchanged; only a duration change
   (e.g. new narration → scenes resize) moves it. To verify an audio swap, listen
   or compare against a muted render — don't rely on `ls -la`.
+
+## Illustrations (optional, text-to-image)
+
+`generate-image-minimax.ts` makes ink-wash / illustration plates with MiniMax
+`image-01` (T2I) and saves them to `public/images/<name>.jpg` for scenes to
+composite via `<Img>` + Ken Burns. It requests `response_format: "base64"` so it
+doesn't depend on the image CDN host being allow-listed (the API otherwise
+returns an aliyuncs.com URL). Same host/auth as the audio scripts.
 
 ## Tuning
 

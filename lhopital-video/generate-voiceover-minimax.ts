@@ -22,7 +22,7 @@ const GROUP_ID = process.env.MINIMAX_GROUP_ID;
 const VOICE_ID =
   process.env.MINIMAX_VOICE_ID ?? "Chinese (Mandarin)_Warm_Bestie";
 const MODEL = process.env.MINIMAX_TTS_MODEL ?? "speech-2.8-hd";
-const BASE = process.env.MINIMAX_BASE ?? "https://api.minimax.io";
+const BASE = process.env.MINIMAX_BASE ?? "https://api.minimaxi.com";
 
 if (!API_KEY || !GROUP_ID) {
   console.error("Missing MINIMAX_API_KEY and/or MINIMAX_GROUP_ID.");
