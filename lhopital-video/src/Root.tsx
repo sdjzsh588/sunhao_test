@@ -16,6 +16,11 @@ import {
   calculateMetadata as kongchengCalculateMetadata,
   defaultProps as kongchengDefaultProps,
 } from "./KongchengComposition";
+import {
+  KongchengProComposition,
+  calculateMetadata as kongchengProCalculateMetadata,
+  defaultProps as kongchengProDefaultProps,
+} from "./KongchengProComposition";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -49,6 +54,16 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={2020}
         defaultProps={kongchengDefaultProps}
         calculateMetadata={kongchengCalculateMetadata}
+      />
+      <Composition
+        id="KongchengPro"
+        component={KongchengProComposition}
+        fps={30}
+        width={1920}
+        height={1080}
+        durationInFrames={2050}
+        defaultProps={kongchengProDefaultProps}
+        calculateMetadata={kongchengProCalculateMetadata}
       />
     </>
   );

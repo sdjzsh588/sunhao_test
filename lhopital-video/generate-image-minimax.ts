@@ -7,7 +7,7 @@
 //
 // Requests base64 so we don't depend on the image CDN host being allow-listed;
 // falls back to fetching the returned URL if only URLs come back.
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 const API_KEY = process.env.MINIMAX_API_KEY;
 const GROUP_ID = process.env.MINIMAX_GROUP_ID;
@@ -24,21 +24,43 @@ const STYLE =
   "rice paper, loose expressive brushwork, lots of negative space, misty, " +
   "elegant and atmospheric, no text, no signature, no border.";
 
-// name -> prompt. Cinematic 16:9 ink-wash plates for the 空城计 story.
+// name -> prompt. Cinematic 16:9 ink-wash plates for the 空城计 story, one per
+// scene. Existing files are skipped so good plates are kept across runs.
 const IMAGES: { name: string; prompt: string; aspect?: string }[] = [
   {
     name: "kongcheng-bg",
     prompt: `${STYLE} A lone ancient Chinese walled city on a plain at dusk, distant layered mountains and drifting mist, ominous calm.`,
   },
   {
+    name: "crisis",
+    prompt: `${STYLE} A vast army with countless banners and spears marching across a misty plain toward a distant walled city, seen from far away, ominous and overwhelming.`,
+  },
+  {
+    name: "decision",
+    prompt: `${STYLE} A lone robed strategist standing atop an empty city wall at dusk, hands clasped behind his back, contemplating, vast misty sky, much empty space.`,
+  },
+  {
     name: "zhuge",
-    prompt: `${STYLE} Silhouette-like figure of a calm seated scholar in robes and tall guan headdress playing a guqin on a city tower, incense smoke rising, serene.`,
+    prompt: `${STYLE} Calm seated scholar in robes and a tall guan headdress playing a guqin atop a city tower, thin incense smoke rising, serene, misty city behind.`,
+  },
+  {
+    name: "retreat",
+    prompt: `${STYLE} A great army on horseback turning away and withdrawing from an open city gate, kicking up dust, banners receding, a mood of doubt and retreat.`,
+  },
+  {
+    name: "outro",
+    prompt: `${STYLE} Serene vast misty mountain landscape with one small distant walled city, calm and empty, lots of negative space, peaceful resolution.`,
   },
 ];
 
 mkdirSync("public/images", { recursive: true });
 
 for (const img of IMAGES) {
+  const outPath = `public/images/${img.name}.jpg`;
+  if (existsSync(outPath)) {
+    console.log(`skip ${img.name} (exists)`);
+    continue;
+  }
   process.stdout.write(`Generating ${img.name}... `);
   const response = await fetch(
     `${BASE}/v1/image_generation?GroupId=${GROUP_ID}`,
