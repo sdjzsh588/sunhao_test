@@ -49,7 +49,7 @@ export const ToolIntro: React.FC<{ config: AIToolConfig; dur: number }> = ({
         </div>
       </div>
       <div style={{ width: "92%", transform: `translateX(${shotX}px)`, opacity: shotOpacity }}>
-        <ScreenFrame shot="homepage" config={config} />
+        <ScreenFrame shot="homepage" config={config} objectPosition="center" zoomTo={1.04} />
       </div>
     </AbsoluteFill>
   );
