@@ -11,18 +11,18 @@ export const napkinConfig: AIToolConfig = {
     points: [
       {
         title: "粘一段文字\nAI 自动出信息图",
-        shot: "input",
-        highlight: { x: 0.18, y: 0.42, w: 0.64, h: 0.22 },
+        shot: "result",
+        focus: "center top",
       },
       {
         title: "几十种风格\n一键切换",
         shot: "styles",
-        highlight: { x: 0.55, y: 0.14, w: 0.42, h: 0.7 },
+        focus: "right top",
       },
       {
         title: "导出 PNG\n公众号 / PPT / 小红书直接用",
         shot: "export",
-        highlight: { x: 0.6, y: 0.35, w: 0.34, h: 0.3 },
+        focus: "center top",
       },
     ],
     before: "30 分钟\n做一张配图",
@@ -47,7 +47,7 @@ export const napkinConfig: AIToolConfig = {
     export: "aitool/napkin/napkin-6-export.png",
     usecase: "aitool/napkin/napkin-7-usecase.png",
   },
-  // Flip to true once the real PNGs are dropped into public/aitool/napkin/.
-  screenshotsReady: false,
+  // Real PNGs are present under public/aitool/napkin/.
+  screenshotsReady: true,
   musicUrl: "aitool/napkin/bgm.mp3",
 };
