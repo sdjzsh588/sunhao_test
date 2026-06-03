@@ -7,8 +7,10 @@ export type ToolPoint = {
   title: string;
   // Screenshot shown for this point (key of `screenshots`).
   shot: ScreenshotKey;
-  // Highlight box, in 0..1 fractions of the screenshot.
-  highlight: Highlight;
+  // CSS object-position for the cover crop (e.g. "center", "center top").
+  focus?: string;
+  // Optional highlight box, in 0..1 fractions of the screenshot.
+  highlight?: Highlight;
   // Optional badge number override (defaults to point index + 1).
   badge?: number;
 };

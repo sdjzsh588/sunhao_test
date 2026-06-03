@@ -1,49 +1,64 @@
 import React from "react";
-import { Img, staticFile } from "remotion";
-import { COLORS, FONT, SIZES } from "../styles";
+import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { COLORS, SIZES } from "../styles";
 import type { Highlight as HL, ScreenshotKey } from "../config/types";
 import type { AIToolConfig } from "../config/types";
 
-const LABELS: Record<ScreenshotKey, string> = {
-  homepage: "首页 Hero",
-  entry: "入口 · 选择添加方式",
-  input: "粘贴文字",
-  result: "生成的信息图",
-  styles: "风格面板 Brand Studio",
-  export: "导出菜单",
-  usecase: "使用场景",
-};
-
-// A framed screenshot. Shows the real PNG when `screenshotsReady`, otherwise a
-// labeled placeholder so the layout/timing is fully previewable.
+// A framed screenshot that fills the frame (cover) with a per-shot focus point
+// and a slow zoom, wrapped in a neon glow. Falls back to a labeled placeholder
+// when the real asset isn't present yet.
 export const ScreenFrame: React.FC<{
   shot: ScreenshotKey;
   config: AIToolConfig;
+  objectPosition?: string;
+  zoomFrom?: number;
+  zoomTo?: number;
   highlight?: HL;
   highlightScale?: number;
   style?: React.CSSProperties;
-}> = ({ shot, config, highlight, highlightScale = 1, style }) => {
+}> = ({
+  shot,
+  config,
+  objectPosition = "center top",
+  zoomFrom = 1.0,
+  zoomTo = 1.06,
+  highlight,
+  highlightScale = 1,
+  style,
+}) => {
+  const frame = useCurrentFrame();
+  const scale = interpolate(frame, [0, 150], [zoomFrom, zoomTo], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
     <div
       style={{
         position: "relative",
         width: "100%",
+        aspectRatio: "4 / 3",
         borderRadius: SIZES.radius,
         overflow: "hidden",
-        border: `2px solid #2a2a2a`,
-        boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
+        border: `2px solid ${COLORS.accent}`,
+        boxShadow: `0 0 50px ${COLORS.highlight}, 0 30px 80px rgba(0,0,0,0.6)`,
         background: COLORS.bgPanel,
-        aspectRatio: "16 / 10",
         ...style,
       }}
     >
       {config.screenshotsReady ? (
         <Img
           src={staticFile(config.screenshots[shot])}
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition,
+            transform: `scale(${scale})`,
+          }}
         />
       ) : (
-        <Placeholder label={LABELS[shot]} file={config.screenshots[shot]} />
+        <Placeholder shot={shot} file={config.screenshots[shot]} />
       )}
 
       {highlight ? (
@@ -68,40 +83,21 @@ export const ScreenFrame: React.FC<{
   );
 };
 
-const Placeholder: React.FC<{ label: string; file: string }> = ({ label, file }) => (
-  <div style={{ position: "absolute", inset: 0, fontFamily: FONT }}>
-    {/* faux browser chrome */}
-    <div
-      style={{
-        height: 54,
-        background: "#1c1c1c",
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: "0 22px",
-        borderBottom: "1px solid #2a2a2a",
-      }}
-    >
-      {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
-        <div key={c} style={{ width: 16, height: 16, borderRadius: 8, background: c }} />
-      ))}
-    </div>
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        top: 54,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 16,
-        backgroundImage:
-          "repeating-linear-gradient(45deg, #161616 0px, #161616 18px, #141414 18px, #141414 36px)",
-      }}
-    >
-      <div style={{ fontSize: 40, fontWeight: 800, color: COLORS.text }}>{label}</div>
-      <div style={{ fontSize: 22, color: COLORS.textMuted }}>截图占位 · {file.split("/").pop()}</div>
-    </div>
+const Placeholder: React.FC<{ shot: ScreenshotKey; file: string }> = ({ shot, file }) => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 14,
+      backgroundImage:
+        "repeating-linear-gradient(45deg, #161616 0px, #161616 18px, #141414 18px, #141414 36px)",
+    }}
+  >
+    <div style={{ fontSize: 40, fontWeight: 800, color: COLORS.text }}>{shot}</div>
+    <div style={{ fontSize: 22, color: COLORS.textMuted }}>{file.split("/").pop()}</div>
   </div>
 );
