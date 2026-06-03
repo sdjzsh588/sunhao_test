@@ -21,6 +21,11 @@ import {
   calculateMetadata as kongchengProCalculateMetadata,
   defaultProps as kongchengProDefaultProps,
 } from "./KongchengProComposition";
+import {
+  AIToolPromo,
+  calculateMetadata as aiToolCalculateMetadata,
+  defaultProps as aiToolDefaultProps,
+} from "./compositions/AIToolPromo/AIToolPromo";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -64,6 +69,16 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={2050}
         defaultProps={kongchengProDefaultProps}
         calculateMetadata={kongchengProCalculateMetadata}
+      />
+      <Composition
+        id="AIToolPromo"
+        component={AIToolPromo}
+        fps={30}
+        width={1080}
+        height={1920}
+        durationInFrames={900}
+        defaultProps={aiToolDefaultProps}
+        calculateMetadata={aiToolCalculateMetadata}
       />
     </>
   );
