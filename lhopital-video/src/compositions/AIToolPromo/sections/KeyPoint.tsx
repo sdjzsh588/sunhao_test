@@ -67,7 +67,8 @@ export const KeyPoint: React.FC<{
         <ScreenFrame
           shot={point.shot}
           config={config}
-          objectPosition={point.focus ?? "center"}
+          scroll={point.scroll}
+          dur={dur}
           highlight={point.highlight}
           highlightScale={hlScale}
         />

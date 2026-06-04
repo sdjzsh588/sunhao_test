@@ -9,23 +9,24 @@ export const napkinConfig: AIToolConfig = {
     toolName: "Napkin",
     value: "把文字秒变专业信息图",
     points: [
+      // point1: the generated result (coords relative to the 1920x1080 image).
       {
         title: "粘一段文字\nAI 自动出信息图",
         shot: "result",
-        focus: "center top",
-        highlight: { x: 0.1, y: 0.13, w: 0.8, h: 0.46 },
+        highlight: { x: 0.28, y: 0.1, w: 0.42, h: 0.6 },
       },
+      // point2: styles — highlight the AI Suggestions panel (multiple layouts).
       {
         title: "几十种风格\n一键切换",
         shot: "styles",
-        focus: "right top",
-        highlight: { x: 0.5, y: 0.1, w: 0.47, h: 0.72 },
+        highlight: { x: 0.213, y: 0.343, w: 0.169, h: 0.369 },
       },
+      // point3: export toolbar isn't capturable in Napkin; show the blog page of
+      // published Napkin visuals (scrolling) — on message for "导出后直接用".
       {
         title: "导出 PNG\n公众号 / PPT / 小红书直接用",
-        shot: "export",
-        focus: "center top",
-        highlight: { x: 0.41, y: 0.0, w: 0.38, h: 0.47 },
+        shot: "usecase",
+        scroll: true,
       },
     ],
     before: "30 分钟\n做一张配图",

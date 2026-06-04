@@ -9,6 +9,8 @@ export type ToolPoint = {
   shot: ScreenshotKey;
   // CSS object-position for the cover crop (e.g. "center", "center top").
   focus?: string;
+  // Pan a tall screenshot (e.g. a full page) downward over the section.
+  scroll?: boolean;
   // Optional highlight box, in 0..1 fractions of the screenshot.
   highlight?: Highlight;
   // Optional badge number override (defaults to point index + 1).

@@ -4,30 +4,44 @@ import { COLORS, SIZES } from "../styles";
 import type { Highlight as HL, ScreenshotKey } from "../config/types";
 import type { AIToolConfig } from "../config/types";
 
-// A framed screenshot that fills the frame (cover) with a per-shot focus point
-// and a slow zoom, wrapped in a neon glow. Falls back to a labeled placeholder
-// when the real asset isn't present yet.
+// A framed screenshot in a neon glow. For 16:9 shots the frame is 16:9 too, so
+// highlight coords (0..1 of the image) map 1:1 with no crop. Tall shots (e.g.
+// the blog page) use `scroll` to pan down the page.
 export const ScreenFrame: React.FC<{
   shot: ScreenshotKey;
   config: AIToolConfig;
-  objectPosition?: string;
-  zoomFrom?: number;
+  aspect?: string;
   zoomTo?: number;
+  scroll?: boolean;
+  scrollPx?: number;
+  dur?: number;
   highlight?: HL;
   highlightScale?: number;
   style?: React.CSSProperties;
 }> = ({
   shot,
   config,
-  objectPosition = "center top",
-  zoomFrom = 1.0,
-  zoomTo = 1.06,
+  aspect = "16 / 9",
+  zoomTo = 1,
+  scroll = false,
+  scrollPx = 460,
+  dur = 150,
   highlight,
   highlightScale = 1,
   style,
 }) => {
   const frame = useCurrentFrame();
-  const scale = interpolate(frame, [0, 150], [zoomFrom, zoomTo], {
+  const ready = config.screenshotsReady;
+  const src = staticFile(config.screenshots[shot]);
+
+  // tall-page pan: image is full width, translate up over the section
+  const panY = scroll
+    ? interpolate(frame, [0, dur], [0, -scrollPx], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 0;
+  const scale = interpolate(frame, [0, 150], [1, zoomTo], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -37,7 +51,7 @@ export const ScreenFrame: React.FC<{
       style={{
         position: "relative",
         width: "100%",
-        aspectRatio: "4 / 3",
+        aspectRatio: aspect,
         borderRadius: SIZES.radius,
         overflow: "hidden",
         border: `2px solid ${COLORS.accent}`,
@@ -46,17 +60,29 @@ export const ScreenFrame: React.FC<{
         ...style,
       }}
     >
-      {config.screenshotsReady ? (
-        <Img
-          src={staticFile(config.screenshots[shot])}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition,
-            transform: `scale(${scale})`,
-          }}
-        />
+      {ready ? (
+        scroll ? (
+          <Img
+            src={src}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${panY}px)`,
+            }}
+          />
+        ) : (
+          <Img
+            src={src}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transform: `scale(${scale})`,
+            }}
+          />
+        )
       ) : (
         <Placeholder shot={shot} file={config.screenshots[shot]} />
       )}
