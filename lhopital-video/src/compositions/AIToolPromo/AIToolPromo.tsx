@@ -17,11 +17,14 @@ import { KeyPoint } from "./sections/KeyPoint";
 import { Comparison } from "./sections/Comparison";
 import { CallToAction } from "./sections/CallToAction";
 
-// Per-section minimum lengths (frames) — the 30s storyboard's pacing. Sections
-// grow to fit their narration clip but never drop below these floors.
-const SECTION_FLOOR = [90, 150, 150, 150, 150, 150, 66];
-const HEAD_PAD = 6; // lead-in before a section's narration starts
-const TAIL_PAD = 12; // beat after narration ends
+// Per-section minimum lengths (frames). Sections grow to fit their narration
+// clip but never drop below these floors.
+const SECTION_FLOOR = [96, 165, 195, 180, 195, 165, 78];
+const HEAD_PAD = 8; // lead-in before a section's narration starts
+// Hold (frames) AFTER the narration ends — longer on the screenshot sections
+// (tool / point1-3) so viewers can actually read the screen before it cuts.
+// order: hook, tool, point1, point2, point3, compare, cta
+const TAIL_PAD = [18, 40, 46, 44, 46, 26, 20];
 
 export type Props = {
   config: AIToolConfig;
@@ -50,7 +53,9 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async ({
 
   const sceneDurations = SECTION_FLOOR.map((floor, i) => {
     const d = durations[i];
-    return d ? Math.max(Math.ceil(d * FPS) + HEAD_PAD + TAIL_PAD, floor) : floor;
+    return d
+      ? Math.max(Math.ceil(d * FPS) + HEAD_PAD + TAIL_PAD[i], floor)
+      : floor;
   });
 
   const bgm = await getAudioDuration(staticFile(config.musicUrl));

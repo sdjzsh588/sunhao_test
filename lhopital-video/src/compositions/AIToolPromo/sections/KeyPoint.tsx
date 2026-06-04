@@ -20,6 +20,8 @@ export const KeyPoint: React.FC<{
   const titleX = slideIn(frame, 6, 18, 120);
   const shotX = slideIn(frame, 16, 22, 220);
   const shotOpacity = fadeIn(frame, 16, 16);
+  // Let viewers see the screenshot first, then the highlight springs in.
+  const hlScale = popScale(frame, fps, 42, { damping: 9, stiffness: 120 });
   const lines = point.title.split("\n");
 
   return (
@@ -62,7 +64,13 @@ export const KeyPoint: React.FC<{
         </div>
       </div>
       <div style={{ width: "94%", transform: `translateX(${shotX}px)`, opacity: shotOpacity }}>
-        <ScreenFrame shot={point.shot} config={config} objectPosition={point.focus ?? "center"} />
+        <ScreenFrame
+          shot={point.shot}
+          config={config}
+          objectPosition={point.focus ?? "center"}
+          highlight={point.highlight}
+          highlightScale={hlScale}
+        />
       </div>
     </AbsoluteFill>
   );
