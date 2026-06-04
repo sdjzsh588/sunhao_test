@@ -68,6 +68,7 @@ export const KeyPoint: React.FC<{
           shot={point.shot}
           config={config}
           scroll={point.scroll}
+          pushIn={point.zoom}
           dur={dur}
           highlight={point.highlight}
           highlightScale={hlScale}

@@ -11,6 +11,8 @@ export type ToolPoint = {
   focus?: string;
   // Pan a tall screenshot (e.g. a full page) downward over the section.
   scroll?: boolean;
+  // Slow push-in toward the highlight over the section.
+  zoom?: boolean;
   // Optional highlight box, in 0..1 fractions of the screenshot.
   highlight?: Highlight;
   // Optional badge number override (defaults to point index + 1).

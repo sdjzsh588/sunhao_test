@@ -13,13 +13,14 @@ export const napkinConfig: AIToolConfig = {
       {
         title: "粘一段文字\nAI 自动出信息图",
         shot: "result",
-        highlight: { x: 0.28, y: 0.1, w: 0.42, h: 0.6 },
+        highlight: { x: 0.274, y: 0.176, w: 0.406, h: 0.317 },
       },
-      // point2: styles — highlight the AI Suggestions panel (multiple layouts).
+      // point2: styles — highlight the AI Suggestions panel, with a push-in.
       {
         title: "几十种风格\n一键切换",
         shot: "styles",
-        highlight: { x: 0.213, y: 0.343, w: 0.169, h: 0.369 },
+        highlight: { x: 0.119, y: 0.137, w: 0.192, h: 0.406 },
+        zoom: true,
       },
       // point3: export toolbar isn't capturable in Napkin; show the blog page of
       // published Napkin visuals (scrolling) — on message for "导出后直接用".

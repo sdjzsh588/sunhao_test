@@ -15,6 +15,7 @@ export const ScreenFrame: React.FC<{
   scroll?: boolean;
   scrollPx?: number;
   dur?: number;
+  pushIn?: boolean;
   highlight?: HL;
   highlightScale?: number;
   style?: React.CSSProperties;
@@ -26,6 +27,7 @@ export const ScreenFrame: React.FC<{
   scroll = false,
   scrollPx = 460,
   dur = 150,
+  pushIn = false,
   highlight,
   highlightScale = 1,
   style,
@@ -46,6 +48,37 @@ export const ScreenFrame: React.FC<{
     extrapolateRight: "clamp",
   });
 
+  // Slow push-in toward the highlighted region (image + box scale together so
+  // the box stays glued to its target).
+  const push = pushIn
+    ? interpolate(frame, [44, 130], [1, 1.32], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 1;
+  const origin = highlight
+    ? `${(highlight.x + highlight.w / 2) * 100}% ${(highlight.y + highlight.h / 2) * 100}%`
+    : "center";
+
+  const box = highlight ? (
+    <div
+      style={{
+        position: "absolute",
+        left: `${highlight.x * 100}%`,
+        top: `${highlight.y * 100}%`,
+        width: `${highlight.w * 100}%`,
+        height: `${highlight.h * 100}%`,
+        border: `4px solid ${COLORS.accent}`,
+        borderRadius: 12,
+        background: COLORS.highlight,
+        boxShadow: `0 0 40px ${COLORS.accent}`,
+        pointerEvents: "none",
+        transform: `scale(${highlightScale})`,
+        transformOrigin: "center",
+      }}
+    />
+  ) : null;
+
   return (
     <div
       style={{
@@ -60,19 +93,28 @@ export const ScreenFrame: React.FC<{
         ...style,
       }}
     >
-      {ready ? (
-        scroll ? (
-          <Img
-            src={src}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${panY}px)`,
-            }}
-          />
-        ) : (
+      {!ready ? (
+        <Placeholder shot={shot} file={config.screenshots[shot]} />
+      ) : scroll ? (
+        <Img
+          src={src}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            transform: `translateY(${panY}px)`,
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            transform: `scale(${push})`,
+            transformOrigin: origin,
+          }}
+        >
           <Img
             src={src}
             style={{
@@ -82,29 +124,9 @@ export const ScreenFrame: React.FC<{
               transform: `scale(${scale})`,
             }}
           />
-        )
-      ) : (
-        <Placeholder shot={shot} file={config.screenshots[shot]} />
+          {box}
+        </div>
       )}
-
-      {highlight ? (
-        <div
-          style={{
-            position: "absolute",
-            left: `${highlight.x * 100}%`,
-            top: `${highlight.y * 100}%`,
-            width: `${highlight.w * 100}%`,
-            height: `${highlight.h * 100}%`,
-            border: `4px solid ${COLORS.accent}`,
-            borderRadius: 12,
-            background: COLORS.highlight,
-            boxShadow: `0 0 40px ${COLORS.accent}`,
-            pointerEvents: "none",
-            transform: `scale(${highlightScale})`,
-            transformOrigin: "center",
-          }}
-        />
-      ) : null}
     </div>
   );
 };
