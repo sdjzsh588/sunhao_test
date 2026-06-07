@@ -4,40 +4,87 @@ import { COLORS, SIZES } from "../styles";
 import type { Highlight as HL, ScreenshotKey } from "../config/types";
 import type { AIToolConfig } from "../config/types";
 
-// A framed screenshot that fills the frame (cover) with a per-shot focus point
-// and a slow zoom, wrapped in a neon glow. Falls back to a labeled placeholder
-// when the real asset isn't present yet.
+// A framed screenshot in a neon glow. For 16:9 shots the frame is 16:9 too, so
+// highlight coords (0..1 of the image) map 1:1 with no crop. Tall shots (e.g.
+// the blog page) use `scroll` to pan down the page.
 export const ScreenFrame: React.FC<{
   shot: ScreenshotKey;
   config: AIToolConfig;
-  objectPosition?: string;
-  zoomFrom?: number;
+  aspect?: string;
   zoomTo?: number;
+  scroll?: boolean;
+  scrollPx?: number;
+  dur?: number;
+  pushIn?: boolean;
   highlight?: HL;
   highlightScale?: number;
   style?: React.CSSProperties;
 }> = ({
   shot,
   config,
-  objectPosition = "center top",
-  zoomFrom = 1.0,
-  zoomTo = 1.06,
+  aspect = "16 / 9",
+  zoomTo = 1,
+  scroll = false,
+  scrollPx = 460,
+  dur = 150,
+  pushIn = false,
   highlight,
   highlightScale = 1,
   style,
 }) => {
   const frame = useCurrentFrame();
-  const scale = interpolate(frame, [0, 150], [zoomFrom, zoomTo], {
+  const ready = config.screenshotsReady;
+  const src = staticFile(config.screenshots[shot]);
+
+  // tall-page pan: image is full width, translate up over the section
+  const panY = scroll
+    ? interpolate(frame, [0, dur], [0, -scrollPx], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 0;
+  const scale = interpolate(frame, [0, 150], [1, zoomTo], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+
+  // Slow push-in toward the highlighted region (image + box scale together so
+  // the box stays glued to its target).
+  const push = pushIn
+    ? interpolate(frame, [44, 130], [1, 1.32], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 1;
+  const origin = highlight
+    ? `${(highlight.x + highlight.w / 2) * 100}% ${(highlight.y + highlight.h / 2) * 100}%`
+    : "center";
+
+  const box = highlight ? (
+    <div
+      style={{
+        position: "absolute",
+        left: `${highlight.x * 100}%`,
+        top: `${highlight.y * 100}%`,
+        width: `${highlight.w * 100}%`,
+        height: `${highlight.h * 100}%`,
+        border: `4px solid ${COLORS.accent}`,
+        borderRadius: 12,
+        background: COLORS.highlight,
+        boxShadow: `0 0 40px ${COLORS.accent}`,
+        pointerEvents: "none",
+        transform: `scale(${highlightScale})`,
+        transformOrigin: "center",
+      }}
+    />
+  ) : null;
 
   return (
     <div
       style={{
         position: "relative",
         width: "100%",
-        aspectRatio: "4 / 3",
+        aspectRatio: aspect,
         borderRadius: SIZES.radius,
         overflow: "hidden",
         border: `2px solid ${COLORS.accent}`,
@@ -46,39 +93,40 @@ export const ScreenFrame: React.FC<{
         ...style,
       }}
     >
-      {config.screenshotsReady ? (
+      {!ready ? (
+        <Placeholder shot={shot} file={config.screenshots[shot]} />
+      ) : scroll ? (
         <Img
-          src={staticFile(config.screenshots[shot])}
+          src={src}
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
             width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition,
-            transform: `scale(${scale})`,
+            transform: `translateY(${panY}px)`,
           }}
         />
       ) : (
-        <Placeholder shot={shot} file={config.screenshots[shot]} />
-      )}
-
-      {highlight ? (
         <div
           style={{
             position: "absolute",
-            left: `${highlight.x * 100}%`,
-            top: `${highlight.y * 100}%`,
-            width: `${highlight.w * 100}%`,
-            height: `${highlight.h * 100}%`,
-            border: `4px solid ${COLORS.accent}`,
-            borderRadius: 12,
-            background: COLORS.highlight,
-            boxShadow: `0 0 40px ${COLORS.accent}`,
-            pointerEvents: "none",
-            transform: `scale(${highlightScale})`,
-            transformOrigin: "center",
+            inset: 0,
+            transform: `scale(${push})`,
+            transformOrigin: origin,
           }}
-        />
-      ) : null}
+        >
+          <Img
+            src={src}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transform: `scale(${scale})`,
+            }}
+          />
+          {box}
+        </div>
+      )}
     </div>
   );
 };
