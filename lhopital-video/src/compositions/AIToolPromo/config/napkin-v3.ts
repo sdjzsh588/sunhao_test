@@ -5,7 +5,7 @@ import type { AIToolConfigV3 } from "./types";
 export const napkinV3: AIToolConfigV3 = {
   slug: "napkin",
   script: {
-    hook: "99% 的人不知道\n写完文章可以一键出图",
+    hook: "文章写完了\n配图还要做半天？",
     toolName: "Napkin",
     value: "把文字秒变专业信息图",
     before: "30 分钟\n做一张配图",
@@ -41,7 +41,7 @@ export const napkinV3: AIToolConfigV3 = {
     },
   ],
   voiceover: [
-    { id: "01-hook", tts: "99% 的人都不知道，写完文章，居然可以一键出图。" },
+    { id: "01-hook", tts: "文章写完了，配图还要做半天？" },
     { id: "02-tool", tts: "这个工具叫 Napkin，能把你的文字，秒变专业信息图。" },
     { id: "03-step1", tts: "第一步，粘一段文字，从任何地方都能导入。" },
     { id: "04-step2", tts: "第二步，点一下闪电，AI 自动帮你出图。" },

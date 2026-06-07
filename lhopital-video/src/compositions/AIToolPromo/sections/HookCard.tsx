@@ -33,7 +33,11 @@ export const HookCard: React.FC<{ text: string; dur: number }> = ({ text, dur })
       >
         {lines.map((l, i) => (
           <div key={i}>
-            {i === 0 ? <span style={{ color: COLORS.accent }}>{l}</span> : l}
+            {i === lines.length - 1 ? (
+              <span style={{ color: COLORS.accent }}>{l}</span>
+            ) : (
+              l
+            )}
           </div>
         ))}
       </div>
