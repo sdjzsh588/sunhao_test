@@ -12,36 +12,32 @@ export const napkinV3: AIToolConfigV3 = {
     after: "30 秒\n搞定",
     cta: "更多被低估的 AI 神器\n关注我",
   },
-  heroMedia: "aitool/napkin/1.jpg",
-  heroAspect: 2714 / 1702,
+  heroMedia: "aitool/napkin/0.jpg",
+  heroAspect: 897 / 240,
   steps: [
     {
       title: "粘一段文字",
       subtitle: "从任何地方导入",
       media: "aitool/napkin/1.jpg",
       aspect: 2714 / 1702,
-      highlight: { x: 0.45, y: 0.15, w: 0.5, h: 0.65 },
     },
     {
       title: "点 ⚡ 一键生成",
       subtitle: "AI 自动出图",
       media: "aitool/napkin/2.mp4",
       aspect: 2648 / 1706,
-      highlight: { x: 0.5, y: 0.3, w: 0.35, h: 0.45 },
     },
     {
       title: "切换风格",
       subtitle: "字体、布局随你改",
       media: "aitool/napkin/3.mp4",
       aspect: 2648 / 1290,
-      highlight: { x: 0.55, y: 0.1, w: 0.4, h: 0.5 },
     },
     {
       title: "多格式导出",
       subtitle: "PNG / SVG / PDF / PPT",
       media: "aitool/napkin/4.mp4",
       aspect: 2648 / 1290,
-      highlight: { x: 0.06, y: 0.58, w: 0.33, h: 0.24 },
     },
   ],
   voiceover: [

@@ -1,7 +1,7 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS, FONT, SIZES } from "../styles";
-import { fadeIn, popScale, sectionOpacity, slideIn, typed } from "../../../utils/animations";
+import { fadeIn, popScale, sectionOpacity, slideIn } from "../../../utils/animations";
 import { MediaFrame } from "./Media";
 import type { AIToolConfigV3, MediaStep } from "../config/types";
 
@@ -81,19 +81,18 @@ export const StepSection: React.FC<{
   );
 };
 
-// Tool-name section for v3: brand name (typed) + value line + hero media.
+// Tool-name section for v3: the Napkin logo on a clean white card + value line.
 export const ToolIntroV3: React.FC<{ config: AIToolConfigV3; dur: number }> = ({
   config,
   dur,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { toolName, value } = config.script;
-  const nameScale = popScale(frame, fps, 0);
-  const shownName = typed(frame, toolName, 4, 2);
+  const { value } = config.script;
+  const logoScale = popScale(frame, fps, 0);
   const opacity = sectionOpacity(frame, dur);
-  const mediaY = slideIn(frame, 26, 22, 80);
-  const mediaOpacity = fadeIn(frame, 26, 16);
+  const valueY = slideIn(frame, 24, 20, 40);
+  const valueOpacity = fadeIn(frame, 24, 16);
 
   return (
     <AbsoluteFill
@@ -102,31 +101,36 @@ export const ToolIntroV3: React.FC<{ config: AIToolConfigV3; dur: number }> = ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        padding: 70,
-        gap: 46,
+        padding: 80,
+        gap: 56,
         opacity,
         fontFamily: FONT,
       }}
     >
-      <div style={{ textAlign: "center", transform: `scale(${nameScale})` }}>
-        <div
-          style={{
-            fontSize: SIZES.toolName,
-            fontWeight: 900,
-            color: COLORS.accent,
-            letterSpacing: 2,
-            textShadow: `0 0 50px ${COLORS.highlight}`,
-            minHeight: SIZES.toolName * 1.2,
-          }}
-        >
-          {shownName}
-        </div>
-        <div style={{ fontSize: SIZES.value, fontWeight: 700, color: COLORS.text, marginTop: 16 }}>
-          {value}
-        </div>
+      <div
+        style={{
+          transform: `scale(${logoScale})`,
+          background: "#ffffff",
+          borderRadius: 28,
+          padding: "70px 80px",
+          boxShadow: `0 0 70px ${COLORS.highlight}`,
+        }}
+      >
+        <Img
+          src={staticFile(config.heroMedia)}
+          style={{ width: 720, height: "auto", display: "block" }}
+        />
       </div>
-      <div style={{ transform: `translateY(${mediaY}px)`, opacity: mediaOpacity }}>
-        <MediaFrame src={config.heroMedia} aspect={config.heroAspect} ready={config.mediaReady} />
+      <div
+        style={{
+          transform: `translateY(${valueY}px)`,
+          opacity: valueOpacity,
+          fontSize: SIZES.value,
+          fontWeight: 700,
+          color: COLORS.text,
+        }}
+      >
+        {value}
       </div>
     </AbsoluteFill>
   );
