@@ -2,7 +2,6 @@ import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COLORS, FONT } from "../styles";
 import { fadeIn, sectionOpacity, slideIn } from "../../../utils/animations";
-import type { AIToolConfig } from "../config/types";
 
 const Column: React.FC<{
   caption: string;
@@ -33,12 +32,12 @@ const Column: React.FC<{
   </div>
 );
 
-export const Comparison: React.FC<{ config: AIToolConfig; dur: number }> = ({
-  config,
+export const Comparison: React.FC<{ before: string; after: string; dur: number }> = ({
+  before,
+  after,
   dur,
 }) => {
   const frame = useCurrentFrame();
-  const { before, after } = config.script;
   const opacity = sectionOpacity(frame, dur);
   const leftX = slideIn(frame, 0, 20, -260);
   const rightX = slideIn(frame, 5, 20, 260);

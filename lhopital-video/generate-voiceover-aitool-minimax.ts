@@ -5,9 +5,9 @@
 //   node --experimental-strip-types generate-voiceover-aitool-minimax.ts napkin
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { napkinConfig } from "./src/compositions/AIToolPromo/config/napkin.ts";
+import { napkinV3 } from "./src/compositions/AIToolPromo/config/napkin-v3.ts";
 
-const CONFIGS = { napkin: napkinConfig } as const;
+const CONFIGS = { napkin: napkinV3 } as const;
 const slug = (process.argv[2] ?? "napkin") as keyof typeof CONFIGS;
 const config = CONFIGS[slug];
 if (!config) {
