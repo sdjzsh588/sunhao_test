@@ -9,32 +9,30 @@ import {
 import { Audio } from "@remotion/media";
 import { getAudioDuration } from "../../voiceover/get-audio-duration";
 import { FPS, H, W } from "./styles";
-import { napkinConfig } from "./config/napkin";
-import type { AIToolConfig } from "./config/types";
+import { napkinV3 } from "./config/napkin-v3";
+import type { AIToolConfigV3 } from "./config/types";
 import { HookCard } from "./sections/HookCard";
-import { ToolIntro } from "./sections/ToolIntro";
-import { KeyPoint } from "./sections/KeyPoint";
+import { StepSection, ToolIntroV3 } from "./sections/StepSection";
 import { Comparison } from "./sections/Comparison";
 import { CallToAction } from "./sections/CallToAction";
 
-// Per-section minimum lengths (frames). Sections grow to fit their narration
-// clip but never drop below these floors.
-const SECTION_FLOOR = [96, 165, 195, 180, 195, 165, 78];
-const HEAD_PAD = 8; // lead-in before a section's narration starts
-// Hold (frames) AFTER the narration ends — longer on the screenshot sections
-// (tool / point1-3) so viewers can actually read the screen before it cuts.
-// order: hook, tool, point1, point2, point3, compare, cta
-const TAIL_PAD = [18, 40, 46, 44, 46, 26, 20];
+// Section order: hook, tool name, step1-4, compare, cta.
+// Minimum lengths (frames); sections grow to fit their narration clip.
+const SECTION_FLOOR = [210, 150, 150, 150, 150, 150, 150, 120];
+const HEAD_PAD = 8;
+// Hold after narration ends — a bit longer on the step sections so the GIF can
+// play a full action before cutting.
+const TAIL_PAD = [18, 34, 36, 40, 40, 40, 26, 22];
 
 export type Props = {
-  config: AIToolConfig;
+  config: AIToolConfigV3;
   sceneDurations: number[];
   voiceoverFiles: (string | null)[];
   bgmFile: string | null;
 };
 
 export const defaultProps: Props = {
-  config: napkinConfig,
+  config: napkinV3,
   sceneDurations: SECTION_FLOOR,
   voiceoverFiles: [],
   bgmFile: null,
@@ -80,25 +78,23 @@ export const AIToolPromo: React.FC<Props> = ({
   voiceoverFiles,
   bgmFile,
 }) => {
-  const { script } = config;
-  const [hook, tool, p1, p2, p3, compare, cta] = sceneDurations;
+  const { script, steps, mediaReady } = config;
 
-  // (section element, frames) in play order.
-  const sections: [React.ReactNode, number][] = [
-    [<HookCard text={script.hook} dur={hook} />, hook],
-    [<ToolIntro config={config} dur={tool} />, tool],
-    [<KeyPoint point={script.points[0]} index={0} config={config} dur={p1} />, p1],
-    [<KeyPoint point={script.points[1]} index={1} config={config} dur={p2} />, p2],
-    [<KeyPoint point={script.points[2]} index={2} config={config} dur={p3} />, p3],
-    [<Comparison config={config} dur={compare} />, compare],
-    [<CallToAction text={script.cta} dur={cta} />, cta],
+  const sections: React.ReactNode[] = [
+    <HookCard text={script.hook} dur={sceneDurations[0]} />,
+    <ToolIntroV3 config={config} dur={sceneDurations[1]} />,
+    ...steps.map((step, i) => (
+      <StepSection step={step} index={i} dur={sceneDurations[2 + i]} ready={mediaReady} />
+    )),
+    <Comparison before={script.before} after={script.after} dur={sceneDurations[6]} />,
+    <CallToAction text={script.cta} dur={sceneDurations[7]} />,
   ];
 
   return (
     <AbsoluteFill style={{ background: "#0a0a0a" }}>
       <Series>
-        {sections.map(([el, frames], i) => (
-          <Series.Sequence key={i} durationInFrames={frames}>
+        {sections.map((el, i) => (
+          <Series.Sequence key={i} durationInFrames={sceneDurations[i]}>
             {el}
             {voiceoverFiles[i] ? (
               <Sequence from={HEAD_PAD}>

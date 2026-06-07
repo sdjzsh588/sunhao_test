@@ -51,3 +51,34 @@ export type AIToolConfig = {
   screenshotsReady: boolean;
   musicUrl: string;
 };
+
+// ---- v3: GIF-driven 4-step tutorial --------------------------------------
+export type MediaStep = {
+  title: string;
+  subtitle?: string;
+  // Asset path under public/ (e.g. "aitool/napkin/2.gif"). .gif loops.
+  media: string;
+  // Intrinsic aspect ratio (width / height) of the asset.
+  aspect: number;
+  // Optional highlight box, in 0..1 fractions of the media.
+  highlight?: Highlight;
+};
+
+export type AIToolConfigV3 = {
+  slug: string;
+  script: {
+    hook: string;
+    toolName: string;
+    value: string;
+    before: string;
+    after: string;
+    cta: string;
+  };
+  // Hero shown in the tool-name section.
+  heroMedia: string;
+  heroAspect: number;
+  steps: MediaStep[];
+  voiceover: VoiceLine[];
+  musicUrl: string;
+  mediaReady: boolean;
+};
