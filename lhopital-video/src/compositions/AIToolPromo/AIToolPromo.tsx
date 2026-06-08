@@ -99,13 +99,13 @@ export const AIToolPromo: React.FC<Props> = ({
             {el}
             {voiceoverFiles[i] ? (
               <Sequence from={HEAD_PAD}>
-                <Audio src={staticFile(voiceoverFiles[i] as string)} volume={1.15} />
+                <Audio src={staticFile(voiceoverFiles[i] as string)} volume={3.6} />
               </Sequence>
             ) : null}
           </Series.Sequence>
         ))}
       </Series>
-      {bgmFile ? <Audio src={staticFile(bgmFile)} loop volume={0.07} /> : null}
+      {bgmFile ? <Audio src={staticFile(bgmFile)} loop volume={0.27} /> : null}
     </AbsoluteFill>
   );
 };
