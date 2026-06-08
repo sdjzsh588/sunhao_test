@@ -19,7 +19,7 @@ import { CallToAction } from "./sections/CallToAction";
 // Section order: hook, tool name, step1-4, compare, cta.
 // Minimum lengths (frames); sections grow to fit their narration clip. The 3
 // video steps (indices 3-5) are held ~2.5s longer so the clip plays out.
-const SECTION_FLOOR = [150, 150, 150, 225, 225, 225, 150, 120];
+const SECTION_FLOOR = [120, 150, 150, 225, 225, 225, 150, 120];
 const HEAD_PAD = 8;
 // Hold after narration ends — a bit longer on the step sections so the GIF can
 // play a full action before cutting.
