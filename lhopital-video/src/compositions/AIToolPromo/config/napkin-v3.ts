@@ -52,4 +52,6 @@ export const napkinV3: AIToolConfigV3 = {
   ],
   musicUrl: "aitool/napkin/bgm.mp3",
   mediaReady: true,
+  seriesTag: "被低估的 AI 神器",
+  episode: 1,
 };

@@ -15,6 +15,7 @@ import { HookCard } from "./sections/HookCard";
 import { StepSection, ToolIntroV3 } from "./sections/StepSection";
 import { Comparison } from "./sections/Comparison";
 import { CallToAction } from "./sections/CallToAction";
+import { SeriesBadge } from "./sections/SeriesBadge";
 
 // Section order: hook, tool name, step1-4, compare, cta.
 // Minimum lengths (frames); sections grow to fit their narration clip. The 3
@@ -105,6 +106,7 @@ export const AIToolPromo: React.FC<Props> = ({
           </Series.Sequence>
         ))}
       </Series>
+      <SeriesBadge tag={config.seriesTag} episode={config.episode} />
       {bgmFile ? <Audio src={staticFile(bgmFile)} loop volume={0.27} /> : null}
     </AbsoluteFill>
   );

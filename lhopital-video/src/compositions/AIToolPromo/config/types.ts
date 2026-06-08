@@ -81,4 +81,7 @@ export type AIToolConfigV3 = {
   voiceover: VoiceLine[];
   musicUrl: string;
   mediaReady: boolean;
+  // Persistent series corner badge.
+  seriesTag: string;
+  episode: number;
 };
