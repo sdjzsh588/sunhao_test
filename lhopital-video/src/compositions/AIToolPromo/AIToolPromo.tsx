@@ -9,7 +9,7 @@ import {
 import { Audio } from "@remotion/media";
 import { getAudioDuration } from "../../voiceover/get-audio-duration";
 import { FPS, H, W } from "./styles";
-import { napkinV3 } from "./config/napkin-v3";
+import { pptxSkillV3 } from "./config/pptx-skill";
 import type { AIToolConfigV3 } from "./config/types";
 import { HookCard } from "./sections/HookCard";
 import { StepSection, ToolIntroV3 } from "./sections/StepSection";
@@ -34,7 +34,7 @@ export type Props = {
 };
 
 export const defaultProps: Props = {
-  config: napkinV3,
+  config: pptxSkillV3,
   sceneDurations: SECTION_FLOOR,
   voiceoverFiles: [],
   bgmFile: null,
