@@ -31,22 +31,17 @@
 3. **接线**:`AIToolPromo.tsx` 已指向 `pptxSkillV3`;
    `generate-voiceover-aitool-minimax.ts` 的 `CONFIGS` 已加 `"pptx-skill"`。
 
-## 待办 ⬜(按顺序)
+## 待办 ✅(2026-06-10 全部完成)
 
-1. **确认环境密钥**:`MINIMAX_API_KEY` + `MINIMAX_GROUP_ID`(上次缺失,用户说会配好)。
-   host 用默认 `api.minimaxi.com`,别改成 .io。
-2. **生成配音**(8 段,输出到 `public/aitool/pptx-skill/voiceover/`):
-   ```bash
-   cd lhopital-video && npm ci
-   node --experimental-strip-types generate-voiceover-aitool-minimax.ts pptx-skill
-   ```
-3. **渲染 + 抽帧检查**(命令见 README 第 6 节;必须带
-   `--browser-executable=...headless_shell --ignore-certificate-errors`)。
-   重点检查:hero 卡在工具名段的观感、步骤图文字清晰度、系列角标显示「第 02 期」。
-4. **音量复测**(README 第 5 节,loudnorm 实测,目标:人声比 BGM 高 ~6dB、真峰 <−1dBTP;
-   人声 volume=3.6 / BGM 0.27 是上期调好的起点,大概率不用动)。
-5. **faststart 导出** `out/*-douyin.mp4`,验收 1080×1920/30fps/<10MB。
-6. **commit + push**(配音 mp3 一起提交;单次 push <40MB)。
+1. ✅ 密钥已配好(`api.minimaxi.com`)。
+2. ✅ 8 段配音已生成并提交(`public/aitool/pptx-skill/voiceover/01-08*.mp3`)。
+3. ✅ 渲染 + 抽帧检查通过:hook/hero/step1-4/对比/CTA 全部正常,
+   角标全程「第 02 期」,黑帧仅为段落转场。
+4. ✅ 音量实测:混音 −18.25 LUFS、真峰 −3.92 dBTP,人声比 BGM 高 ~6-7dB,
+   volume 3.6/0.27 未动。
+5. ✅ `out/pptx-skill-douyin.mp4`:1080×1920、30fps、51.8s、4.9MB。
+   (out/ 在 gitignore,本地重渲一遍即可复现。)
+6. ✅ 已 commit + push。**EP02 制作完成,可交付。**
 
 ## 备注
 
