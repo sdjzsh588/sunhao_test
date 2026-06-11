@@ -16,7 +16,7 @@ export type CutoutBeatSpec = {
 // All cutouts are REAL rembg output (u2net); sources are AI-generated.
 export const rembgV4: AIToolConfigV3 & {
   beats: CutoutBeatSpec[];
-  batch: { cmd: string; cutouts: string[] };
+  batch: { cmd: string; items: { src: string; cut: string }[] };
 } = {
   slug: "rembg",
   script: {
@@ -47,17 +47,20 @@ export const rembgV4: AIToolConfigV3 & {
   ],
   batch: {
     cmd: "rembg p 商品图/ 抠好/",
-    cutouts: [
-      "aitool/rembg/batch-cut/portrait.png",
-      "aitool/rembg/batch-cut/product.png",
-      "aitool/rembg/batch-cut/pet.png",
-      "aitool/rembg/batch-cut/bag.png",
-      "aitool/rembg/batch-cut/dog.png",
-      "aitool/rembg/batch-cut/mug.png",
-      "aitool/rembg/batch-cut/plant.png",
-      "aitool/rembg/batch-cut/lamp.png",
-      "aitool/rembg/batch-cut/watch.png",
-    ],
+    items: [
+      "portrait",
+      "product",
+      "pet",
+      "bag",
+      "dog",
+      "mug",
+      "plant",
+      "lamp",
+      "watch",
+    ].map((n) => ({
+      src: `aitool/rembg/batch-src/${n}.jpg`,
+      cut: `aitool/rembg/batch-cut/${n}.png`,
+    })),
   },
   steps: [],
   voiceover: [

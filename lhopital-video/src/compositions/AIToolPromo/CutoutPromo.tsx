@@ -208,7 +208,7 @@ export const CutoutPromo: React.FC<Props> = ({
     )),
     <BatchBeat
       cmd={config.batch.cmd}
-      cutouts={config.batch.cutouts}
+      items={config.batch.items}
       dur={sceneDurations[5]}
     />,
     <Recap config={config} dur={sceneDurations[6]} />,
