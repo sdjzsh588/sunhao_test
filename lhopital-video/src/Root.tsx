@@ -26,6 +26,11 @@ import {
   calculateMetadata as aiToolCalculateMetadata,
   defaultProps as aiToolDefaultProps,
 } from "./compositions/AIToolPromo/AIToolPromo";
+import {
+  PosterPromo,
+  calculateMetadata as posterCalculateMetadata,
+  defaultProps as posterDefaultProps,
+} from "./compositions/AIToolPromo/PosterPromo";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -79,6 +84,16 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={900}
         defaultProps={aiToolDefaultProps}
         calculateMetadata={aiToolCalculateMetadata}
+      />
+      <Composition
+        id="PosterPromo"
+        component={PosterPromo}
+        fps={30}
+        width={1080}
+        height={1920}
+        durationInFrames={900}
+        defaultProps={posterDefaultProps}
+        calculateMetadata={posterCalculateMetadata}
       />
     </>
   );

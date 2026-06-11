@@ -14,7 +14,20 @@
 - 角度:「一句话做出能用的封面/海报」。钩子:「想发小红书、做海报,排版丑到不想发?」。
 - 前后对比:套模板改完还是土 → 一句话出高级感成品。
 
-## 已完成 ✅
+## v2 改版(用户反馈:要「打出需求 → 展示生成的海报」,风格可不同)✅
+
+- **新 composition `PosterPromo`**(`src/compositions/AIToolPromo/PosterPromo.tsx`,
+  Root.tsx 已注册,渲染 id 是 **PosterPromo** 不是 AIToolPromo):
+  hook → 工具卡 → **4 个「需求→海报」节拍** → 收束网格 → CTA。
+- 节拍组件 `sections/PosterBeat.tsx`:顶部逐字打出一句需求,打完后海报像
+  打印一样从底部升起占满画面,绿色「✓ 已生成 n/4」角签弹出;配音念的就是
+  屏幕上的需求。
+- 配音 8 段全部重写重生(id:01-hook / 02-tool / 03-beat1…06-beat4 /
+  07-recap / 08-cta)。
+- 复检:抽帧 OK;混音 −18.12 LUFS / 真峰 −1.42 dBTP;douyin 导出
+  1080×1920 / 30fps / 55s / 6.3MB。AIToolPromo 默认 config 已指回 pptx-skill。
+
+## 已完成(v1,基础仍在用)✅
 
 1. **配置**:`config/canvas-design.ts`(`slug: canvas-design`、`episode: 3`、
    8 句 voiceover、BGM 复用 `aitool/napkin/bgm.mp3`)。

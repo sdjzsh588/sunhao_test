@@ -5,36 +5,37 @@ import {
   Sequence,
   Series,
   staticFile,
+  useCurrentFrame,
 } from "remotion";
 import { Audio } from "@remotion/media";
 import { getAudioDuration } from "../../voiceover/get-audio-duration";
-import { FPS, H, W } from "./styles";
-import { pptxSkillV3 } from "./config/pptx-skill";
-import type { AIToolConfigV3 } from "./config/types";
+import { COLORS, FONT, FPS, H, W } from "./styles";
+import { canvasDesignV3 } from "./config/canvas-design";
+import { fadeIn, sectionOpacity } from "../../utils/animations";
 import { HookCard } from "./sections/HookCard";
-import { StepSection, ToolIntroV3 } from "./sections/StepSection";
-import { Comparison } from "./sections/Comparison";
+import { ToolIntroV3 } from "./sections/StepSection";
+import { PosterBeat } from "./sections/PosterBeat";
+import { SlidesGrid } from "./sections/SlidesGrid";
 import { CallToAction } from "./sections/CallToAction";
 import { SeriesBadge } from "./sections/SeriesBadge";
 
-// Section order: hook, tool name, step1-4, compare, cta.
-// Minimum lengths (frames); sections grow to fit their narration clip. The 3
-// video steps (indices 3-5) are held ~2.5s longer so the clip plays out.
-const SECTION_FLOOR = [120, 150, 150, 225, 225, 225, 150, 120];
+// EP03 format: hook → tool card → 4 × (brief types → poster prints up) →
+// recap grid → CTA. Section order matches the config's voiceover[].
+const SECTION_FLOOR = [120, 150, 210, 210, 210, 210, 180, 120];
 const HEAD_PAD = 8;
-// Hold after narration ends — a bit longer on the step sections so the GIF can
-// play a full action before cutting.
-const TAIL_PAD = [18, 34, 36, 40, 40, 40, 26, 22];
+const TAIL_PAD = [18, 30, 40, 40, 40, 40, 30, 22];
+
+type Cfg = typeof canvasDesignV3;
 
 export type Props = {
-  config: AIToolConfigV3;
+  config: Cfg;
   sceneDurations: number[];
   voiceoverFiles: (string | null)[];
   bgmFile: string | null;
 };
 
 export const defaultProps: Props = {
-  config: pptxSkillV3,
+  config: canvasDesignV3,
   sceneDurations: SECTION_FLOOR,
   voiceoverFiles: [],
   bgmFile: null,
@@ -50,16 +51,13 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async ({
   const durations = await Promise.all(
     files.map((f) => getAudioDuration(staticFile(f))),
   );
-
   const sceneDurations = SECTION_FLOOR.map((floor, i) => {
     const d = durations[i];
     return d
       ? Math.max(Math.ceil(d * FPS) + HEAD_PAD + TAIL_PAD[i], floor)
       : floor;
   });
-
   const bgm = await getAudioDuration(staticFile(config.musicUrl));
-
   return {
     durationInFrames: sceneDurations.reduce((a, b) => a + b, 0),
     fps: FPS,
@@ -74,21 +72,59 @@ export const calculateMetadata: CalculateMetadataFunction<Props> = async ({
   };
 };
 
-export const AIToolPromo: React.FC<Props> = ({
+// Recap: all four posters side by side — "none of these is a template".
+const Recap: React.FC<{ config: Cfg; dur: number }> = ({ config, dur }) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill
+      style={{
+        background: COLORS.bg,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 70,
+        gap: 50,
+        opacity: sectionOpacity(frame, dur),
+        fontFamily: FONT,
+      }}
+    >
+      <div style={{ textAlign: "center", opacity: fadeIn(frame, 0, 12) }}>
+        <div style={{ fontSize: 62, fontWeight: 900, color: COLORS.text }}>
+          四张图 · 四种风格
+        </div>
+        <div style={{ fontSize: 38, color: COLORS.textMuted, marginTop: 12 }}>
+          没有一张套模板
+        </div>
+      </div>
+      <SlidesGrid
+        slides={config.beats.map((b) => b.poster)}
+        aspect={1080 / 1440}
+        width={920}
+      />
+    </AbsoluteFill>
+  );
+};
+
+export const PosterPromo: React.FC<Props> = ({
   config,
   sceneDurations,
   voiceoverFiles,
   bgmFile,
 }) => {
-  const { script, steps, mediaReady } = config;
+  const { script, beats } = config;
 
   const sections: React.ReactNode[] = [
     <HookCard text={script.hook} dur={sceneDurations[0]} />,
     <ToolIntroV3 config={config} dur={sceneDurations[1]} />,
-    ...steps.map((step, i) => (
-      <StepSection step={step} index={i} dur={sceneDurations[2 + i]} ready={mediaReady} />
+    ...beats.map((beat, i) => (
+      <PosterBeat
+        prompt={beat.prompt}
+        poster={beat.poster}
+        index={i}
+        dur={sceneDurations[2 + i]}
+      />
     )),
-    <Comparison before={script.before} after={script.after} dur={sceneDurations[6]} />,
+    <Recap config={config} dur={sceneDurations[6]} />,
     <CallToAction text={script.cta} dur={sceneDurations[7]} />,
   ];
 

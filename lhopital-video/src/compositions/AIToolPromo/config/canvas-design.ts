@@ -1,92 +1,71 @@
 import type { AIToolConfigV3 } from "./types";
 
-// Episode 3 — canvas-design (Anthropic skill, in the example-skills plugin of
-// anthropics/skills). Makes museum-quality posters/covers as .png/.pdf from a
-// one-line brief. Steps 1-3 are chrome-less streaming terminals; step 4 shows
-// real designed posters (HTML/CSS → Chromium, the same way the skill renders
-// design code to PNG). Sources in mockups/canvas-design/.
-export const canvasDesignV3: AIToolConfigV3 = {
+// One prompt→poster beat of the PosterPromo composition.
+export type PosterBeatSpec = { prompt: string; poster: string };
+
+// Episode 3 — canvas-design (Anthropic skill, example-skills plugin of
+// anthropics/skills). Format differs from EP01/02 by design (user feedback):
+// the whole video is "type the brief → the finished poster prints up",
+// four times, then a recap grid. Posters are real designs rendered the same
+// way the skill works (design code → PNG); sources in mockups/canvas-design/.
+export const canvasDesignV3: AIToolConfigV3 & { beats: PosterBeatSpec[] } = {
   slug: "canvas-design",
   script: {
     hook: "想发小红书、做海报\n排版丑到不想发？",
     toolName: "canvas-design",
-    value: "一句话做出能用的封面海报",
+    value: "说一句话，直接出成品海报",
     before: "套模板\n改完还是土",
     after: "一句话\n出高级成品",
     cta: "更多被低估的 AI 神器\n关注我",
   },
   heroMedia: "aitool/canvas-design/0.png",
   heroAspect: 1800 / 480,
-  steps: [
+  beats: [
     {
-      title: "装上 skill",
-      subtitle: "Claude 官方 · 免费",
-      media: "",
-      aspect: 1,
-      terminal: [
-        { text: "/plugin marketplace add anthropics/skills", kind: "cmd" },
-        { text: "✓ 已添加插件市场 anthropic-agent-skills", kind: "ok", pause: 16 },
-        { text: "/plugin install example-skills@anthropic-agent-skills", kind: "cmd" },
-        { text: "✓ 已安装 · 含 canvas-design / algorithmic-art", kind: "ok" },
-      ],
+      prompt: "做一张深夜读书会封面，深色烫金，高级感",
+      poster: "aitool/canvas-design/posters/1.png",
     },
     {
-      title: "说出你要的",
-      subtitle: "一句话讲清风格",
-      media: "",
-      aspect: 1,
-      terminal: [
-        {
-          text: "做一张读书分享的小红书封面，深色烫金，高级感",
-          kind: "cmd",
-          pause: 22,
-        },
-        { text: "主题 / 氛围 / 用途，讲清楚就行", kind: "muted" },
-      ],
+      prompt: "音乐节海报，荧光撞色，街头感拉满",
+      poster: "aitool/canvas-design/posters/2.png",
     },
     {
-      title: "它自己搞设计",
-      subtitle: "版式、配色、字体全自动",
-      media: "",
-      aspect: 1,
-      terminal: [
-        { text: "确立设计哲学 · 编辑式留白", kind: "out", pause: 18 },
-        { text: "排版 · 配色 · 字体层级 · 视觉重心", kind: "out", pause: 18 },
-        { text: "渲染导出 PNG / PDF · 可直接印刷", kind: "out", pause: 22 },
-        { text: "✓ 已生成 海报.png（1080×1440）", kind: "ok" },
-      ],
+      prompt: "手冲咖啡店海报，奶油色，极简治愈",
+      poster: "aitool/canvas-design/posters/3.png",
     },
     {
-      title: "打开就能发",
-      subtitle: "换个需求，风格随你变",
-      media: "",
-      aspect: 1080 / 1440,
-      slides: [1, 2, 3, 4].map((n) => `aitool/canvas-design/posters/${n}.png`),
+      prompt: "现代设计展海报，包豪斯，几何配色",
+      poster: "aitool/canvas-design/posters/4.png",
     },
   ],
+  // steps unused by PosterPromo (kept for type compatibility).
+  steps: [],
   voiceover: [
     { id: "01-hook", tts: "想发小红书、做海报，排版丑到自己都不想发？" },
     {
       id: "02-tool",
-      tts: "这个神器叫 canvas design，Claude 官方技能，一句话做出能用的封面海报。",
+      tts: "这个神器叫 canvas design，Claude 官方技能。你说一句话，它直接给你出成品海报。不信？现场试四张。",
     },
     {
-      id: "03-step1",
-      tts: "第一步，装上这个官方技能，免费，一条命令搞定。",
+      id: "03-beat1",
+      tts: "第一张：做一张深夜读书会封面，深色烫金，要高级感。",
     },
     {
-      id: "04-step2",
-      tts: "第二步，一句话说清你要什么，主题、氛围、用途，讲明白就行。",
+      id: "04-beat2",
+      tts: "第二张：音乐节海报，荧光撞色，街头感拉满。",
     },
     {
-      id: "05-step3",
-      tts: "第三步，它自己定设计哲学，版式、配色、字体全部自动，直接导出能印刷的图。",
+      id: "05-beat3",
+      tts: "第三张，换个温柔的：手冲咖啡店海报，奶油色，极简治愈。",
     },
     {
-      id: "06-step4",
-      tts: "打开就能发，换个需求，封面、海报、展览图，风格随你变。",
+      id: "06-beat4",
+      tts: "第四张：现代设计展，包豪斯风格，几何配色。",
     },
-    { id: "07-compare", tts: "以前套模板改半天还是土，现在一句话，出高级感成品。" },
+    {
+      id: "07-recap",
+      tts: "四张图，四种风格，没有一张套模板。版式、配色、字体，全是它自己定的。",
+    },
     { id: "08-cta", tts: "想看更多被低估的 AI 神器，记得点个关注！" },
   ],
   musicUrl: "aitool/napkin/bgm.mp3",
