@@ -77,6 +77,8 @@ export type MediaStep = {
   terminal?: TermLine[];
   // Render a staggered grid of slide images (paths under public/) instead.
   slides?: string[];
+  // Render a before/after photo reveal (paths under public/) instead.
+  beforeAfter?: { before: string; after: string };
 };
 
 export type AIToolConfigV3 = {

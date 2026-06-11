@@ -7,8 +7,13 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { napkinV3 } from "./src/compositions/AIToolPromo/config/napkin-v3.ts";
 import { pptxSkillV3 } from "./src/compositions/AIToolPromo/config/pptx-skill.ts";
+import { photoUpscaleV3 } from "./src/compositions/AIToolPromo/config/photo-upscale.ts";
 
-const CONFIGS = { napkin: napkinV3, "pptx-skill": pptxSkillV3 } as const;
+const CONFIGS = {
+  napkin: napkinV3,
+  "pptx-skill": pptxSkillV3,
+  "photo-upscale": photoUpscaleV3,
+} as const;
 const slug = (process.argv[2] ?? "napkin") as keyof typeof CONFIGS;
 const config = CONFIGS[slug];
 if (!config) {

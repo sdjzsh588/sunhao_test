@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%;
+    font-family: "DejaVu Sans", "WenQuanYi Zen Hei", sans-serif; }
+  body { background: #101418; color: #e8eaed; overflow: hidden; }
+  .card { position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 60px; }
+  /* icon: a low-res tile sharpening into a crisp one */
+  .icon {
+    width: 300px; height: 300px; border-radius: 64px;
+    background: linear-gradient(135deg, #00ff88, #00b365);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 24px 80px rgba(0,255,136,.30);
+    position: relative; overflow: hidden;
+  }
+  .icon .lo { position: absolute; left: 0; top: 0; bottom: 0; width: 50%;
+    background:
+      repeating-linear-gradient(0deg,#0a3b27 0 24px,#0e5238 24px 48px),
+      repeating-linear-gradient(90deg,#0a3b27 0 24px,#0e5238 24px 48px);
+    background-blend-mode: difference; opacity: .85; }
+  .icon .arrow { position: relative; z-index: 2;
+    font-size: 150px; font-weight: 900; color: #07261a; }
+  .word .name { font-size: 132px; font-weight: 800; letter-spacing: -2px; }
+  .word .sub { margin-top: 24px; font-size: 50px; color: #9aa4ad;
+    display: flex; align-items: center; gap: 26px; }
+  .badge { font-size: 40px; font-weight: 700; color: #0a0a0a;
+    background: #00ff88; border-radius: 999px; padding: 10px 30px; }
+</style></head>
+<body>
+  <div class="card">
+    <div class="icon"><div class="lo"></div><div class="arrow">↗</div></div>
+    <div class="word">
+      <div class="name">Real-ESRGAN</div>
+      <div class="sub"><span>腾讯 ARC · 开源照片修复</span><span class="badge">★ 35.7k</span></div>
+    </div>
+  </div>
+</body></html>

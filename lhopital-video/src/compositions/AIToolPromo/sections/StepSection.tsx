@@ -5,6 +5,7 @@ import { fadeIn, popScale, sectionOpacity, slideIn } from "../../../utils/animat
 import { MediaFrame } from "./Media";
 import { TerminalStream } from "./TerminalStream";
 import { SlidesGrid } from "./SlidesGrid";
+import { BeforeAfter } from "./BeforeAfter";
 import type { AIToolConfigV3, MediaStep } from "../config/types";
 
 // One of the 4 tutorial steps: numbered badge + title/subtitle, then the step
@@ -76,6 +77,12 @@ export const StepSection: React.FC<{
           <TerminalStream lines={step.terminal} />
         ) : step.slides ? (
           <SlidesGrid slides={step.slides} aspect={step.aspect} />
+        ) : step.beforeAfter ? (
+          <BeforeAfter
+            before={step.beforeAfter.before}
+            after={step.beforeAfter.after}
+            aspect={step.aspect}
+          />
         ) : (
           <MediaFrame
             src={step.media}
