@@ -43,7 +43,16 @@ const USAGE_LINES = [
   { text: "第③步 把这行粘贴进去，回车：", kind: "muted" as const, pause: 12 },
   { text: 'pip install "rembg[cli]"', kind: "cmd" as const, pause: 18 },
   { text: "✓ 装好了 · 以后抠图就这一行：", kind: "ok" as const, pause: 12 },
-  { text: "rembg i 原图.jpg 抠好.png", kind: "cmd" as const },
+  { text: "rembg i 原图.jpg 抠好.png", kind: "cmd" as const, pause: 14 },
+  {
+    text: "它怎么知道图在哪？先打 rembg i 加空格，",
+    kind: "muted" as const,
+    pause: 10,
+  },
+  {
+    text: "再把照片直接拖进这个窗口——位置自动填上 ✓",
+    kind: "muted" as const,
+  },
 ];
 
 type Cfg = typeof rembgV4;
