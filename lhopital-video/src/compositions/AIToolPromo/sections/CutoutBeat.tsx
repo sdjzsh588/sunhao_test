@@ -15,7 +15,21 @@ export const CutoutBeat: React.FC<{
   afterTag: string;
   index: number;
   dur: number;
-}> = ({ label, before, after, beforeTag, afterTag, index, dur }) => {
+  kicker?: string;
+  aspect?: number;
+  width?: number;
+}> = ({
+  label,
+  before,
+  after,
+  beforeTag,
+  afterTag,
+  index,
+  dur,
+  kicker,
+  aspect = 3 / 4,
+  width = 760,
+}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill
@@ -38,7 +52,7 @@ export const CutoutBeat: React.FC<{
         }}
       >
         <div style={{ fontSize: 32, color: COLORS.accent, fontWeight: 800, letterSpacing: 2 }}>
-          用法 {index + 1}
+          {kicker ?? `用法 ${index + 1}`}
         </div>
         <div style={{ fontSize: 66, fontWeight: 900, color: COLORS.text, marginTop: 8 }}>
           {label}
@@ -47,8 +61,8 @@ export const CutoutBeat: React.FC<{
       <BeforeAfter
         before={before}
         after={after}
-        aspect={3 / 4}
-        width={760}
+        aspect={aspect}
+        width={width}
         beforeTag={beforeTag}
         afterTag={afterTag}
         pixelated={false}
