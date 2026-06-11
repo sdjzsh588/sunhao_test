@@ -27,12 +27,23 @@ const SECTION_FLOOR = [120, 150, 240, 240, 240, 270, 180, 120];
 const HEAD_PAD = 8;
 const TAIL_PAD = [18, 30, 34, 30, 30, 36, 30, 22];
 
+// Spelled out for non-technical viewers: what Python is for, where to type,
+// and that the command is paste-and-enter.
 const USAGE_LINES = [
-  { text: "pip install rembg", kind: "cmd" as const },
-  { text: "✓ 已安装 · 开源免费 · 全平台", kind: "ok" as const, pause: 12 },
+  {
+    text: "第①步 装 Python：python.org 下载，一路点下一步",
+    kind: "muted" as const,
+    pause: 26,
+  },
+  {
+    text: "第②步 打开命令行：Win键+R 输 cmd ｜ Mac 搜「终端」",
+    kind: "muted" as const,
+    pause: 26,
+  },
+  { text: "第③步 把这行粘贴进去，回车：", kind: "muted" as const, pause: 12 },
+  { text: 'pip install "rembg[cli]"', kind: "cmd" as const, pause: 18 },
+  { text: "✓ 装好了 · 以后抠图就这一行：", kind: "ok" as const, pause: 12 },
   { text: "rembg i 原图.jpg 抠好.png", kind: "cmd" as const },
-  { text: "✓ 背景已移除 · 本地运行，照片不上传", kind: "ok" as const, pause: 14 },
-  { text: "无水印 · 不限张数 · 不用开会员", kind: "muted" as const },
 ];
 
 type Cfg = typeof rembgV4;
@@ -99,10 +110,10 @@ const UsageCard: React.FC<{ dur: number }> = ({ dur }) => {
     >
       <div style={{ textAlign: "center", opacity: fadeIn(frame, 0, 12) }}>
         <div style={{ fontSize: 60, fontWeight: 900, color: COLORS.text }}>
-          怎么用？一行
+          怎么装？三步
         </div>
         <div style={{ fontSize: 36, color: COLORS.textMuted, marginTop: 12 }}>
-          装好 · 一句命令搞定
+          不懂技术也能装好
         </div>
       </div>
       <TerminalStream lines={USAGE_LINES} />
