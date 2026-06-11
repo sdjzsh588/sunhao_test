@@ -8,11 +8,13 @@ import { dirname } from "node:path";
 import { napkinV3 } from "./src/compositions/AIToolPromo/config/napkin-v3.ts";
 import { pptxSkillV3 } from "./src/compositions/AIToolPromo/config/pptx-skill.ts";
 import { canvasDesignV3 } from "./src/compositions/AIToolPromo/config/canvas-design.ts";
+import { rembgV4 } from "./src/compositions/AIToolPromo/config/rembg.ts";
 
 const CONFIGS = {
   napkin: napkinV3,
   "pptx-skill": pptxSkillV3,
   "canvas-design": canvasDesignV3,
+  rembg: rembgV4,
 } as const;
 const slug = (process.argv[2] ?? "napkin") as keyof typeof CONFIGS;
 const config = CONFIGS[slug];

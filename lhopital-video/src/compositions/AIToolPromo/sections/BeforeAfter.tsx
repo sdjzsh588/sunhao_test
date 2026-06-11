@@ -16,7 +16,18 @@ export const BeforeAfter: React.FC<{
   after: string;
   aspect: number;
   width?: number;
-}> = ({ before, after, aspect, width = 760 }) => {
+  beforeTag?: string;
+  afterTag?: string;
+  pixelated?: boolean;
+}> = ({
+  before,
+  after,
+  aspect,
+  width = 760,
+  beforeTag = "糊",
+  afterTag = "高清",
+  pixelated = true,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const height = Math.round(width / aspect);
@@ -53,18 +64,19 @@ export const BeforeAfter: React.FC<{
         boxShadow: `0 0 50px ${COLORS.highlight}, 0 26px 70px rgba(0,0,0,0.6)`,
       }}
     >
-      {/* AFTER is the base layer (fully sharp). */}
+      {/* BEFORE is the base layer; shown first, then revealed away by AFTER. */}
       <Img
-        src={staticFile(after)}
+        src={staticFile(before)}
         style={{
           position: "absolute",
           inset: 0,
           width: "100%",
           height: "100%",
           objectFit: "cover",
+          imageRendering: pixelated ? "pixelated" : "auto",
         }}
       />
-      {/* BEFORE clipped to the left of the divider — recedes as it sweeps. */}
+      {/* AFTER wipes in from the left as the divider sweeps right. */}
       <div
         style={{
           position: "absolute",
@@ -73,12 +85,11 @@ export const BeforeAfter: React.FC<{
         }}
       >
         <Img
-          src={staticFile(before)}
+          src={staticFile(after)}
           style={{
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            imageRendering: "pixelated",
           }}
         />
       </div>
@@ -96,8 +107,8 @@ export const BeforeAfter: React.FC<{
           opacity: t > 0.001 && t < 0.999 ? 1 : 0,
         }}
       />
-      <div style={{ ...tagStyle("#ff5b5b"), left: 20 }}>糊</div>
-      <div style={{ ...tagStyle(COLORS.accent), right: 20 }}>高清</div>
+      <div style={{ ...tagStyle("#ff5b5b"), left: 20 }}>{beforeTag}</div>
+      <div style={{ ...tagStyle(COLORS.accent), right: 20 }}>{afterTag}</div>
     </div>
   );
 };

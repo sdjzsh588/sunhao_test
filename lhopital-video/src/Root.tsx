@@ -31,6 +31,11 @@ import {
   calculateMetadata as posterCalculateMetadata,
   defaultProps as posterDefaultProps,
 } from "./compositions/AIToolPromo/PosterPromo";
+import {
+  CutoutPromo,
+  calculateMetadata as cutoutCalculateMetadata,
+  defaultProps as cutoutDefaultProps,
+} from "./compositions/AIToolPromo/CutoutPromo";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -94,6 +99,16 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={900}
         defaultProps={posterDefaultProps}
         calculateMetadata={posterCalculateMetadata}
+      />
+      <Composition
+        id="CutoutPromo"
+        component={CutoutPromo}
+        fps={30}
+        width={1080}
+        height={1920}
+        durationInFrames={900}
+        defaultProps={cutoutDefaultProps}
+        calculateMetadata={cutoutCalculateMetadata}
       />
     </>
   );
