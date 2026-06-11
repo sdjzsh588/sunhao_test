@@ -167,9 +167,11 @@ subprocess.run(
 import pypdfium2 as pdfium
 
 CROP_H_FRAC = 0.72  # keep the top 72% of the A4 page — content area
+# 2x the 880px display width in the video (integer-ish downscale = crisp text)
+SCALE = 2.9
 for n in ("before", "after"):
     page = pdfium.PdfDocument(f"{OUT}/{n}.pdf")[0]
-    img = page.render(scale=2.2).to_pil()
+    img = page.render(scale=SCALE).to_pil()
     w, h = img.size
     img.crop((0, 0, w, int(h * CROP_H_FRAC))).save(f"{OUT}/{n}.png")
     print(n, "cropped", (w, int(h * CROP_H_FRAC)))

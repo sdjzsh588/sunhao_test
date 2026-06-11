@@ -1,4 +1,5 @@
 import "./index.css";
+import "./load-fonts";
 import { Composition } from "remotion";
 import {
   MyComposition,
