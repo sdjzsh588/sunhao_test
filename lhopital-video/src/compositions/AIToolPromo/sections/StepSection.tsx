@@ -3,10 +3,13 @@ import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "
 import { COLORS, FONT, SIZES } from "../styles";
 import { fadeIn, popScale, sectionOpacity, slideIn } from "../../../utils/animations";
 import { MediaFrame } from "./Media";
+import { TerminalStream } from "./TerminalStream";
+import { SlidesGrid } from "./SlidesGrid";
 import type { AIToolConfigV3, MediaStep } from "../config/types";
 
-// One of the 4 tutorial steps: numbered badge + title/subtitle, then the
-// looping GIF (or jpg) with a highlight that springs in after the media settles.
+// One of the 4 tutorial steps: numbered badge + title/subtitle, then the step
+// visual — a streaming terminal (`step.terminal`), a grid of real slides
+// (`step.slides`), or the default framed media asset.
 export const StepSection: React.FC<{
   step: MediaStep;
   index: number;
@@ -69,13 +72,19 @@ export const StepSection: React.FC<{
       </div>
 
       <div style={{ transform: `translateY(${mediaY}px)`, opacity: mediaOpacity }}>
-        <MediaFrame
-          src={step.media}
-          aspect={step.aspect}
-          highlight={step.highlight}
-          highlightScale={hlScale}
-          ready={ready}
-        />
+        {step.terminal ? (
+          <TerminalStream lines={step.terminal} />
+        ) : step.slides ? (
+          <SlidesGrid slides={step.slides} aspect={step.aspect} />
+        ) : (
+          <MediaFrame
+            src={step.media}
+            aspect={step.aspect}
+            highlight={step.highlight}
+            highlightScale={hlScale}
+            ready={ready}
+          />
+        )}
       </div>
     </AbsoluteFill>
   );

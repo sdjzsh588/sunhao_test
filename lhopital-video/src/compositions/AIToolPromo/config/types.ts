@@ -53,15 +53,30 @@ export type AIToolConfig = {
 };
 
 // ---- v3: GIF-driven 4-step tutorial --------------------------------------
+
+// One line of a streamed terminal step. "cmd" lines type out character by
+// character; the rest fade in line by line. `pause` = extra frames to hold
+// before the next line starts.
+export type TermLine = {
+  text: string;
+  kind: "cmd" | "out" | "ok" | "muted";
+  pause?: number;
+};
+
 export type MediaStep = {
   title: string;
   subtitle?: string;
   // Asset path under public/ (e.g. "aitool/napkin/2.gif"). .gif loops.
+  // Unused when `terminal` or `slides` is set.
   media: string;
   // Intrinsic aspect ratio (width / height) of the asset.
   aspect: number;
   // Optional highlight box, in 0..1 fractions of the media.
   highlight?: Highlight;
+  // Render a streaming terminal instead of the media asset.
+  terminal?: TermLine[];
+  // Render a staggered grid of slide images (paths under public/) instead.
+  slides?: string[];
 };
 
 export type AIToolConfigV3 = {

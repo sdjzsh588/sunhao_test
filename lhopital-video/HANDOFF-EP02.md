@@ -43,9 +43,25 @@
    (out/ 在 gitignore,本地重渲一遍即可复现。)
 6. ✅ 已 commit + push。**EP02 制作完成,可交付。**
 
+## v2 改版(2026-06-11,按用户反馈)✅
+
+- **步骤 1-3 改为流式终端动画**(`sections/TerminalStream.tsx`):命令逐字
+  打出、输出逐行流入,无窗口装饰(用户明确不要 Claude Code 窗口壳)。
+  step1 用真实的两条命令(`/plugin marketplace add anthropics/skills` +
+  `/plugin install ...`,直接 install 会报 Marketplace not found)。
+- **步骤 4 用真实成品**:用户真跑了 skill,生成的
+  `2026Q2季度业务总结.pptx`(8 页)已入库;LibreOffice(需
+  `apt install libreoffice-impress`,容器默认没有)转 PDF → pymupdf 抽页 →
+  `public/aitool/pptx-skill/slides/1-8.png`,`sections/SlidesGrid.tsx`
+  逐张弹入。喂给 skill 的源文档在 `samples/季度总结.md`。
+- 旧的 1-4.png 模拟图已删,仅 0.png(片头 logo 卡)仍是自制设计稿。
+- 03-step1 文案改为「两条命令」,8 段配音全部重生并提交。
+- 复检:全段抽帧 OK;混音 −18.16 LUFS / 真峰 −2.30 dBTP;
+  douyin 导出 1080×1920 / 30fps / 52.7s / 5.9MB。
+
 ## 备注
 
-- 素材是「高保真重现」(HTML mockup),不是真实录屏——用户已知情。
+- 片头 hero 卡(0.png)是设计稿;其余画面为流式终端组件 + 真实 PPT 截图。
 - 如需动效,可把某一步的 HTML 加 CSS 动画后用 Chromium 连续截帧合成 mp4,
   但上期 step1 也是静态 jpg,静态可接受;StepSection 本身有入场动画。
 - 文案如改动,`voiceover[]` 是单一数据源,改完要**重生全部 8 段**并提交 mp3。

@@ -1,8 +1,10 @@
 import type { AIToolConfigV3 } from "./types";
 
 // Episode 2 — Anthropic's official pptx skill (anthropics/skills, document-skills
-// plugin). Assets are HTML mockups screenshotted via headless Chromium; sources
-// live in mockups/pptx-skill/.
+// plugin). Steps 1-3 are chrome-less streaming terminals (TerminalStream); step 4
+// shows the REAL deck the user generated with the skill (2026Q2季度业务总结.pptx,
+// converted to public/aitool/pptx-skill/slides/*.png via LibreOffice). Only the
+// hero logo card (0.png) is still a designed mockup.
 export const pptxSkillV3: AIToolConfigV3 = {
   slug: "pptx-skill",
   script: {
@@ -18,27 +20,57 @@ export const pptxSkillV3: AIToolConfigV3 = {
   steps: [
     {
       title: "装上官方 Skill",
-      subtitle: "一条命令搞定",
-      media: "aitool/pptx-skill/1.png",
+      subtitle: "两条命令搞定",
+      media: "",
       aspect: 2400 / 1500,
+      terminal: [
+        { text: "/plugin marketplace add anthropics/skills", kind: "cmd" },
+        { text: "✓ 已添加插件市场 anthropic-agent-skills", kind: "ok", pause: 18 },
+        {
+          text: "/plugin install document-skills@anthropic-agent-skills",
+          kind: "cmd",
+        },
+        {
+          text: "✓ 已安装 document-skills：pptx · docx · xlsx · pdf",
+          kind: "ok",
+        },
+      ],
     },
     {
       title: "把材料丢给它",
       subtitle: "Word / Markdown 都行",
-      media: "aitool/pptx-skill/2.png",
+      media: "",
       aspect: 2400 / 1500,
+      terminal: [
+        { text: "已添加文件  季度总结.md（8.2 KB）", kind: "muted", pause: 16 },
+        {
+          text: "把 @季度总结.md 做成 PPT，深色商务风，多用图表",
+          kind: "cmd",
+          pause: 20,
+        },
+        { text: "Word / Markdown / 一段大纲，都可以直接丢进来", kind: "muted" },
+      ],
     },
     {
       title: "说一句：做成 PPT",
       subtitle: "排版、配色、图表全自动",
-      media: "aitool/pptx-skill/3.png",
+      media: "",
       aspect: 2400 / 1500,
+      terminal: [
+        { text: "读取 季度总结.md · 提炼重点", kind: "out", pause: 20 },
+        { text: "Skill：pptx · 设计大纲（8 页）", kind: "out", pause: 20 },
+        { text: "自动排版 · 配色 · 图表 · 中文字体", kind: "out", pause: 24 },
+        { text: "✓ 已生成 2026Q2季度业务总结.pptx（8 页）", kind: "ok" },
+      ],
     },
     {
       title: "打开就能用",
-      subtitle: "PowerPoint 里随便改",
-      media: "aitool/pptx-skill/4.png",
-      aspect: 2400 / 1500,
+      subtitle: "真实成品 · PowerPoint 里随便改",
+      media: "",
+      aspect: 1300 / 732,
+      slides: [1, 2, 3, 4, 5, 6, 7, 8].map(
+        (n) => `aitool/pptx-skill/slides/${n}.png`,
+      ),
     },
   ],
   voiceover: [
@@ -49,7 +81,7 @@ export const pptxSkillV3: AIToolConfigV3 = {
     },
     {
       id: "03-step1",
-      tts: "第一步，在 Claude Code 里输入这条命令，把官方文档技能装上。",
+      tts: "第一步，在终端里敲两条命令，把官方的文档技能装上。",
     },
     {
       id: "04-step2",
