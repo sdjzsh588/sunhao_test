@@ -9,7 +9,7 @@ import {
 import { Audio } from "@remotion/media";
 import { getAudioDuration } from "../../voiceover/get-audio-duration";
 import { FPS, H, W } from "./styles";
-import { photoUpscaleV3 } from "./config/photo-upscale";
+import { canvasDesignV3 } from "./config/canvas-design";
 import type { AIToolConfigV3 } from "./config/types";
 import { HookCard } from "./sections/HookCard";
 import { StepSection, ToolIntroV3 } from "./sections/StepSection";
@@ -34,7 +34,7 @@ export type Props = {
 };
 
 export const defaultProps: Props = {
-  config: photoUpscaleV3,
+  config: canvasDesignV3,
   sceneDurations: SECTION_FLOOR,
   voiceoverFiles: [],
   bgmFile: null,

@@ -7,12 +7,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { napkinV3 } from "./src/compositions/AIToolPromo/config/napkin-v3.ts";
 import { pptxSkillV3 } from "./src/compositions/AIToolPromo/config/pptx-skill.ts";
-import { photoUpscaleV3 } from "./src/compositions/AIToolPromo/config/photo-upscale.ts";
+import { canvasDesignV3 } from "./src/compositions/AIToolPromo/config/canvas-design.ts";
 
 const CONFIGS = {
   napkin: napkinV3,
   "pptx-skill": pptxSkillV3,
-  "photo-upscale": photoUpscaleV3,
+  "canvas-design": canvasDesignV3,
 } as const;
 const slug = (process.argv[2] ?? "napkin") as keyof typeof CONFIGS;
 const config = CONFIGS[slug];
