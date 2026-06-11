@@ -274,7 +274,7 @@ export const ResumePromo: React.FC<Props> = ({
       beforeTag="原版"
       afterTag="优化后"
       aspect={config.page.aspect}
-      width={680}
+      width={880}
       index={1}
       dur={sceneDurations[4]}
     />,

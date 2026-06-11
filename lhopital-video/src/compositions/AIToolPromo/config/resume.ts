@@ -42,7 +42,7 @@ export const resumeV5: AIToolConfigV3 & {
   page: {
     before: "aitool/resume/files/before.png",
     after: "aitool/resume/files/after.png",
-    aspect: 1347 / 1743,
+    aspect: 1347 / 1254,
   },
   wall: [
     "简历优化",
