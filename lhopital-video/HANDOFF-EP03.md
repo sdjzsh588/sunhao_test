@@ -14,6 +14,22 @@
 - 角度:「一句话做出能用的封面/海报」。钩子:「想发小红书、做海报,排版丑到不想发?」。
 - 前后对比:套模板改完还是土 → 一句话出高级感成品。
 
+## v3 海报改为「真·调用 skill 生成」(用户问:这几张是你调 skill 生成的吗)✅
+
+- v1/v2 的海报是我手写 HTML/CSS 的「仿制」,**不是 skill 产物**。v3 改正:
+  - 把官方 canvas-design **真装进** `.claude/skills/canvas-design/`(SKILL.md +
+    81 个 canvas-fonts 字体),装后它出现在可用 skill 列表,**通过 Skill 工具
+    正式调用**。
+  - 严格走它的两步法:① 每张先产出「设计哲学」.md
+    (`canvas-design-run/philosophy/*.md`,4 个命名运动:Nocturnal Gravity /
+    Frequency Riot / Slow Bloom / Concrete Chord)→ ② 用 skill 自带字体
+    (Gloock / BigShoulders / Outfit / YoungSerif / InstrumentSerif 等)渲染成
+    PNG(`canvas-design-run/render/*`,经 Chromium 截图),含系统化标记 / 坐标 /
+    均衡器 / 同心轮廓等 skill 强调的「科学图鉴」语言,绝不重叠。
+  - 成品 PNG 覆盖 `public/aitool/canvas-design/posters/{1-4}.png`,重渲视频。
+- 注:渲染机制仍是「写设计代码→Chromium 出 PNG」,这正是 canvas-design 的
+  工作方式;CJK 标题用系统 WenQuanYi 配 skill 的拉丁展示字体。
+
 ## v2 改版(用户反馈:要「打出需求 → 展示生成的海报」,风格可不同)✅
 
 - **新 composition `PosterPromo`**(`src/compositions/AIToolPromo/PosterPromo.tsx`,

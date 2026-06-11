@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1440px;overflow:hidden;}
+  body{position:relative;background:#efe7d6;color:#4a3a2a;}
+  .top{position:absolute;top:108px;left:112px;right:112px;display:flex;
+    justify-content:space-between;font-family:'JetBrainsMono';font-size:24px;
+    letter-spacing:5px;color:#a4906f;}
+  /* the bloom: concentric contour rings, patient repetition */
+  .bloom{position:absolute;top:300px;left:50%;transform:translateX(-50%);
+    width:620px;height:620px;}
+  .bloom span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    border-radius:50%;border:1.5px solid rgba(120,86,54,.55);}
+  .core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle at 42% 38%,#7a5536,#3f2817);}
+  .mid{position:absolute;left:0;right:0;top:980px;text-align:center;}
+  .cn{font-family:'WenQuanYi Zen Hei';font-size:118px;letter-spacing:24px;
+    color:#3f2817;font-weight:700;}
+  .en{font-family:'YoungSerif';font-size:44px;letter-spacing:14px;color:#8a7150;
+    margin-top:22px;}
+  .foot{position:absolute;left:0;right:0;bottom:150px;text-align:center;
+    font-family:'Lora';font-size:32px;letter-spacing:8px;color:#a4906f;}
+</style></head><body>
+  <div class="top"><span>SLOW BLOOM</span><span>NO.07</span></div>
+  <div class="bloom">
+    <span style="width:620px;height:620px;border-color:rgba(120,86,54,.16)"></span>
+    <span style="width:500px;height:500px;border-color:rgba(120,86,54,.26)"></span>
+    <span style="width:392px;height:392px;border-color:rgba(120,86,54,.38)"></span>
+    <span style="width:288px;height:288px;border-color:rgba(120,86,54,.50)"></span>
+    <span style="width:200px;height:200px;border-color:rgba(120,86,54,.66)"></span>
+    <div class="core"></div>
+  </div>
+  <div class="mid">
+    <div class="cn">慢 萃</div>
+    <div class="en">SLOW · BLOOM · DAILY</div>
+  </div>
+  <div class="foot">一 杯 手 冲 ， 慢 下 来 的 理 由</div>
+</body></html>

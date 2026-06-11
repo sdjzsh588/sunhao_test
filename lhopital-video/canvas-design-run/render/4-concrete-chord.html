@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1080px;height:1440px;overflow:hidden;}
+  body{position:relative;background:#f2efe9;color:#161616;}
+  /* faint modular grid */
+  .grid{position:absolute;inset:96px;
+    background-image:linear-gradient(#0000000d 1px,transparent 1px),
+      linear-gradient(90deg,#0000000d 1px,transparent 1px);
+    background-size:148px 148px;}
+  .top{position:absolute;top:104px;left:104px;right:104px;display:flex;
+    justify-content:space-between;font-family:'Outfit';font-weight:700;
+    font-size:30px;letter-spacing:7px;}
+  /* primary triad — perfect shapes on the grid */
+  .sq{position:absolute;left:104px;top:330px;width:296px;height:296px;background:#1f49d6;}
+  .ci{position:absolute;right:118px;top:300px;width:316px;height:316px;
+    border-radius:50%;background:#e02d22;}
+  .tr{position:absolute;left:392px;top:646px;width:0;height:0;
+    border-left:168px solid transparent;border-right:168px solid transparent;
+    border-bottom:292px solid #f2c019;}
+  /* systematic coordinate labels */
+  .lab{position:absolute;font-family:'JetBrainsMono';font-size:20px;
+    letter-spacing:2px;color:#555;}
+  .title{position:absolute;left:104px;top:966px;}
+  .cn{font-family:'WenQuanYi Zen Hei';font-weight:800;font-size:178px;
+    letter-spacing:10px;line-height:.96;}
+  .en{font-family:'Outfit';font-weight:700;font-size:48px;letter-spacing:10px;
+    margin-top:16px;}
+  .foot{position:absolute;left:104px;right:104px;bottom:96px;display:flex;
+    justify-content:space-between;align-items:flex-end;
+    font-family:'Outfit';font-size:28px;letter-spacing:2px;line-height:1.45;}
+  .foot .yr{font-family:'BigShoulders';font-weight:700;font-size:96px;letter-spacing:-1px;}
+</style></head><body>
+  <div class="grid"></div>
+  <div class="top"><span>MODERN DESIGN</span><span>EXPO</span></div>
+  <div class="sq"></div><div class="ci"></div><div class="tr"></div>
+  <span class="lab" style="left:104px;top:300px;">□ COBALT</span>
+  <span class="lab" style="right:118px;top:268px;">○ VERMILION</span>
+  <span class="lab" style="left:430px;top:612px;">△ CHROME</span>
+  <div class="title">
+    <div class="cn">形与色</div>
+    <div class="en">FORM &amp; COLOR</div>
+  </div>
+  <div class="foot">
+    <span>现代设计展<br>当代美术馆 · A 馆</span>
+    <span class="yr">2026</span>
+  </div>
+</body></html>
