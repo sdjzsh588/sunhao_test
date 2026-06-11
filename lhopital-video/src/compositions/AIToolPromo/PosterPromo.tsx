@@ -15,15 +15,56 @@ import { fadeIn, sectionOpacity } from "../../utils/animations";
 import { HookCard } from "./sections/HookCard";
 import { ToolIntroV3 } from "./sections/StepSection";
 import { PosterBeat } from "./sections/PosterBeat";
+import { TerminalStream } from "./sections/TerminalStream";
 import { SlidesGrid } from "./sections/SlidesGrid";
 import { CallToAction } from "./sections/CallToAction";
 import { SeriesBadge } from "./sections/SeriesBadge";
 
-// EP03 format: hook → tool card → 4 × (brief types → poster prints up) →
-// recap grid → CTA. Section order matches the config's voiceover[].
-const SECTION_FLOOR = [120, 150, 210, 210, 210, 210, 180, 120];
+// EP03 format: hook → tool card → usage (install + how) → 4 × (brief types →
+// poster prints up) → recap grid → CTA. Order matches the config's voiceover[].
+const SECTION_FLOOR = [120, 150, 240, 210, 210, 210, 210, 180, 120];
 const HEAD_PAD = 8;
-const TAIL_PAD = [18, 30, 40, 40, 40, 40, 30, 22];
+const TAIL_PAD = [18, 30, 34, 40, 40, 40, 40, 30, 22];
+
+// Real install + invocation of the canvas-design skill — how, not just effect.
+const USAGE_LINES = [
+  { text: "/plugin marketplace add anthropics/skills", kind: "cmd" as const },
+  { text: "✓ 已添加官方技能市场", kind: "ok" as const, pause: 12 },
+  {
+    text: "/plugin install example-skills@anthropic-agent-skills",
+    kind: "cmd" as const,
+  },
+  { text: "✓ 已装好 canvas-design", kind: "ok" as const, pause: 16 },
+  { text: "然后——直接说你要什么海报就行", kind: "muted" as const },
+];
+
+const UsageCard: React.FC<{ dur: number }> = ({ dur }) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill
+      style={{
+        background: COLORS.bg,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "70px 60px",
+        gap: 40,
+        opacity: sectionOpacity(frame, dur),
+        fontFamily: FONT,
+      }}
+    >
+      <div style={{ textAlign: "center", opacity: fadeIn(frame, 0, 12) }}>
+        <div style={{ fontSize: 60, fontWeight: 900, color: COLORS.text }}>
+          怎么用？两步
+        </div>
+        <div style={{ fontSize: 36, color: COLORS.textMuted, marginTop: 12 }}>
+          装好 · 然后张口就来
+        </div>
+      </div>
+      <TerminalStream lines={USAGE_LINES} />
+    </AbsoluteFill>
+  );
+};
 
 type Cfg = typeof canvasDesignV3;
 
@@ -116,16 +157,17 @@ export const PosterPromo: React.FC<Props> = ({
   const sections: React.ReactNode[] = [
     <HookCard text={script.hook} dur={sceneDurations[0]} />,
     <ToolIntroV3 config={config} dur={sceneDurations[1]} />,
+    <UsageCard dur={sceneDurations[2]} />,
     ...beats.map((beat, i) => (
       <PosterBeat
         prompt={beat.prompt}
         poster={beat.poster}
         index={i}
-        dur={sceneDurations[2 + i]}
+        dur={sceneDurations[3 + i]}
       />
     )),
-    <Recap config={config} dur={sceneDurations[6]} />,
-    <CallToAction text={script.cta} dur={sceneDurations[7]} />,
+    <Recap config={config} dur={sceneDurations[7]} />,
+    <CallToAction text={script.cta} dur={sceneDurations[8]} />,
   ];
 
   return (

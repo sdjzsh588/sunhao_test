@@ -44,29 +44,33 @@ export const canvasDesignV3: AIToolConfigV3 & { beats: PosterBeatSpec[] } = {
     { id: "01-hook", tts: "想发小红书、做海报，排版丑到自己都不想发？" },
     {
       id: "02-tool",
-      tts: "这个神器叫 canvas design，Claude 官方技能。你说一句话，它直接给你出成品海报。不信？现场试四张。",
+      tts: "这个神器叫 canvas design，Claude 官方技能。你说一句话，它直接给你出成品海报。",
     },
     {
-      id: "03-beat1",
+      id: "03-usage",
+      tts: "用法超简单：在 Claude 里加上官方技能市场，一条命令装好 canvas design；然后你只管说要什么海报，剩下交给它。现场试四张。",
+    },
+    {
+      id: "04-beat1",
       tts: "第一张：做一张深夜读书会封面，深色烫金，要高级感。",
     },
     {
-      id: "04-beat2",
+      id: "05-beat2",
       tts: "第二张：音乐节海报，荧光撞色，街头感拉满。",
     },
     {
-      id: "05-beat3",
+      id: "06-beat3",
       tts: "第三张，换个温柔的：手冲咖啡店海报，奶油色，极简治愈。",
     },
     {
-      id: "06-beat4",
+      id: "07-beat4",
       tts: "第四张：现代设计展，包豪斯风格，几何配色。",
     },
     {
-      id: "07-recap",
+      id: "08-recap",
       tts: "四张图，四种风格，没有一张套模板。版式、配色、字体，全是它自己定的。",
     },
-    { id: "08-cta", tts: "想看更多被低估的 AI 神器，记得点个关注！" },
+    { id: "09-cta", tts: "想看更多被低估的 AI 神器，记得点个关注！" },
   ],
   musicUrl: "aitool/napkin/bgm.mp3",
   mediaReady: true,
