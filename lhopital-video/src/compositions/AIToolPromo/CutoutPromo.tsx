@@ -16,22 +16,23 @@ import { fadeIn, sectionOpacity, slideIn } from "../../utils/animations";
 import { HookCard } from "./sections/HookCard";
 import { ToolIntroV3 } from "./sections/StepSection";
 import { CutoutBeat } from "./sections/CutoutBeat";
+import { BatchBeat } from "./sections/BatchBeat";
 import { TerminalStream } from "./sections/TerminalStream";
 import { CallToAction } from "./sections/CallToAction";
 import { SeriesBadge } from "./sections/SeriesBadge";
 
-// EP04 format: hook → tool → usage (install + one command) → 3 cutout
-// before/after reveals → recap row → CTA. Order matches config.voiceover[].
-const SECTION_FLOOR = [120, 150, 240, 240, 240, 240, 180, 120];
+// EP04 format: hook → tool → usage → 2 single before/afters → batch wall
+// (the differentiator) → recap chips → CTA. Order matches config.voiceover[].
+const SECTION_FLOOR = [120, 150, 240, 240, 240, 270, 180, 120];
 const HEAD_PAD = 8;
-const TAIL_PAD = [18, 30, 34, 30, 30, 30, 30, 22];
+const TAIL_PAD = [18, 30, 34, 30, 30, 36, 30, 22];
 
 const USAGE_LINES = [
   { text: "pip install rembg", kind: "cmd" as const },
   { text: "✓ 已安装 · 开源免费 · 全平台", kind: "ok" as const, pause: 12 },
   { text: "rembg i 原图.jpg 抠好.png", kind: "cmd" as const },
-  { text: "✓ 背景已移除 · 连发丝都保住", kind: "ok" as const, pause: 16 },
-  { text: "想批量？rembg p 整个文件夹/ 一次全抠", kind: "muted" as const },
+  { text: "✓ 背景已移除 · 本地运行，照片不上传", kind: "ok" as const, pause: 14 },
+  { text: "无水印 · 不限张数 · 不用开会员", kind: "muted" as const },
 ];
 
 type Cfg = typeof rembgV4;
@@ -109,6 +110,8 @@ const UsageCard: React.FC<{ dur: number }> = ({ dur }) => {
   );
 };
 
+const REASONS = ["免费", "无水印", "本地运行", "批量随便跑"];
+
 const Recap: React.FC<{ config: Cfg; dur: number }> = ({ config, dur }) => {
   const frame = useCurrentFrame();
   return (
@@ -119,30 +122,58 @@ const Recap: React.FC<{ config: Cfg; dur: number }> = ({ config, dur }) => {
         justifyContent: "center",
         alignItems: "center",
         padding: 60,
-        gap: 50,
+        gap: 56,
         opacity: sectionOpacity(frame, dur),
         fontFamily: FONT,
       }}
     >
       <div style={{ textAlign: "center", opacity: fadeIn(frame, 0, 12) }}>
         <div style={{ fontSize: 62, fontWeight: 900, color: COLORS.text }}>
-          人 · 物 · 宠物
+          装它的理由
         </div>
         <div style={{ fontSize: 38, color: COLORS.textMuted, marginTop: 12 }}>
-          再乱的背景，几秒抠干净
+          手机 App 给不了的
         </div>
       </div>
-      <div style={{ display: "flex", gap: 22, width: "100%", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 26,
+          justifyContent: "center",
+          maxWidth: 880,
+        }}
+      >
+        {REASONS.map((r, i) => (
+          <div
+            key={i}
+            style={{
+              fontSize: 52,
+              fontWeight: 900,
+              color: "#000",
+              background: COLORS.accent,
+              borderRadius: 999,
+              padding: "20px 52px",
+              transform: `translateY(${slideIn(frame, 6 + i * 5, 18, 60)}px)`,
+              opacity: fadeIn(frame, 6 + i * 5, 14),
+              boxShadow: `0 0 40px ${COLORS.highlight}`,
+            }}
+          >
+            {r}
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 18, justifyContent: "center" }}>
         {config.beats.map((b, i) => (
           <Img
             key={i}
             src={staticFile(b.after)}
             style={{
-              width: 300,
-              borderRadius: 18,
-              border: `2px solid ${COLORS.accent}`,
-              transform: `translateY(${slideIn(frame, 4 + i * 4, 18, 60)}px)`,
-              opacity: fadeIn(frame, 4 + i * 4, 14),
+              width: 230,
+              borderRadius: 16,
+              border: `1px solid #2c2c2c`,
+              transform: `translateY(${slideIn(frame, 18 + i * 4, 18, 60)}px)`,
+              opacity: fadeIn(frame, 18 + i * 4, 14),
               boxShadow: `0 18px 50px rgba(0,0,0,0.5)`,
             }}
           />
@@ -175,6 +206,11 @@ export const CutoutPromo: React.FC<Props> = ({
         dur={sceneDurations[3 + i]}
       />
     )),
+    <BatchBeat
+      cmd={config.batch.cmd}
+      cutouts={config.batch.cutouts}
+      dur={sceneDurations[5]}
+    />,
     <Recap config={config} dur={sceneDurations[6]} />,
     <CallToAction text={script.cta} dur={sceneDurations[7]} />,
   ];

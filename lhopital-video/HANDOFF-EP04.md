@@ -35,3 +35,14 @@
 
 - 换素材:换 `src/*.jpg` 重跑 `run-rembg.py` → 覆盖 `out/*.jpg` 重渲,配音不用动。
 - 系列进度:EP01 Napkin / EP02 pptx / EP03 canvas-design / EP04 rembg。
+
+## v2 改版(用户质疑:抠图 App 都有,装它有必要吗)✅
+
+- 脚本重心改为**差异化**:钩子「抠一张图,手机就行;抠一百张呢?」;
+  收束改为「装它的理由:免费/无水印/本地运行/批量随便跑」胶囊。
+- 新增 `sections/BatchBeat.tsx`:终端敲 `rembg p 商品图/ 抠好/` → 9 张真实
+  批量抠图逐张弹进 3×3 墙(透明棋盘格底)→「✓ 9/9 全部抠完 · 11 秒」。
+- 批量素材是真跑 `rembg p`:6 张新源图(/tmp/gen-batch.ts 生成,提交在
+  batch-src/)+ 3 张旧源,9 张 11 秒(CPU)→ batch-cut/*.png。
+- 宠物单张节拍删去(进批量墙);配音 06-batch/07-recap 重写。
+- 复检:批量墙/理由胶囊 OK;混音 −17.38 LUFS / 真峰 −2.32 dBTP;61.7s / 6.9MB。

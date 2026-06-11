@@ -9,18 +9,22 @@ export type CutoutBeatSpec = {
 };
 
 // Episode 4 — rembg (open-source one-command background removal, 23.3k★).
-// Format: hook → tool card → usage (install + one command) → 3 before/after
-// cutout reveals → recap grid → CTA. The cutouts are REAL rembg output
-// (u2net): src/*.jpg → cut to transparent → composited on a new bg (out/*.jpg).
-// See run-rembg.py. People/pet are AI-generated (no real individual).
-export const rembgV4: AIToolConfigV3 & { beats: CutoutBeatSpec[] } = {
+// Angle (per feedback): phone apps can cut out ONE photo — the reason to
+// install rembg is BATCH + free/no-watermark + runs locally. Format: hook →
+// tool card → usage → 2 single-shot before/afters → the batch wall (real
+// `rembg p`, 9 images in 11s on CPU) → recap (免费/无水印/本地) → CTA.
+// All cutouts are REAL rembg output (u2net); sources are AI-generated.
+export const rembgV4: AIToolConfigV3 & {
+  beats: CutoutBeatSpec[];
+  batch: { cmd: string; cutouts: string[] };
+} = {
   slug: "rembg",
   script: {
-    hook: "抠个图\n还在 PS 里描半天？",
+    hook: "抠一张图，手机就行\n抠一百张呢？",
     toolName: "rembg",
-    value: "一行命令，背景抠得干干净净",
-    before: "手动描边\n半小时起步",
-    after: "一行命令\n几秒抠好",
+    value: "一条命令，整个文件夹全抠完",
+    before: "App 一张张点\n高清还要会员",
+    after: "一条命令批量抠\n免费无水印",
     cta: "更多被低估的 AI 神器\n关注我",
   },
   heroMedia: "aitool/rembg/0.png",
@@ -40,40 +44,47 @@ export const rembgV4: AIToolConfigV3 & { beats: CutoutBeatSpec[] } = {
       beforeTag: "原图",
       afterTag: "白底",
     },
-    {
-      label: "一键换背景",
-      before: "aitool/rembg/src/pet.jpg",
-      after: "aitool/rembg/out/pet.jpg",
-      beforeTag: "原图",
-      afterTag: "抠好",
-    },
   ],
+  batch: {
+    cmd: "rembg p 商品图/ 抠好/",
+    cutouts: [
+      "aitool/rembg/batch-cut/portrait.png",
+      "aitool/rembg/batch-cut/product.png",
+      "aitool/rembg/batch-cut/pet.png",
+      "aitool/rembg/batch-cut/bag.png",
+      "aitool/rembg/batch-cut/dog.png",
+      "aitool/rembg/batch-cut/mug.png",
+      "aitool/rembg/batch-cut/plant.png",
+      "aitool/rembg/batch-cut/lamp.png",
+      "aitool/rembg/batch-cut/watch.png",
+    ],
+  },
   steps: [],
   voiceover: [
-    { id: "01-hook", tts: "抠个图，还在 PS 里描边描半天？" },
+    { id: "01-hook", tts: "抠一张图，手机长按就行。那要抠一百张呢？" },
     {
       id: "02-tool",
-      tts: "这个神器叫 rembg，开源免费，一行命令，把背景抠得干干净净。",
+      tts: "这个神器叫 rembg，开源免费。它真正的本事，是一条命令把整个文件夹全抠完。",
     },
     {
       id: "03-usage",
-      tts: "用法巨简单：装好之后，一句 rembg i 原图 输出图，就完事了，连头发丝都给你保住。",
+      tts: "用法：装好之后，抠单张是 rembg i；本地运行，照片不用上传，没有水印，也不用开会员。",
     },
     {
       id: "04-beat1",
-      tts: "第一个用处，证件照换底色：蓝底、红底、白底，随你换。",
+      tts: "单张当然没问题：证件照换底色，连发丝都保住。",
     },
     {
       id: "05-beat2",
-      tts: "第二个，电商商品图：背景一抹，干净的白底主图就有了。",
+      tts: "电商商品图，背景一抹，白底主图就有了。",
     },
     {
-      id: "06-beat3",
-      tts: "第三个，一键换背景：做表情包、海报素材，都行。",
+      id: "06-batch",
+      tts: "重点来了：换成 rembg p，一条命令，九张图十一秒全抠完。一百张？也是一条命令的事。这就是手机 App 干不了的。",
     },
     {
       id: "07-recap",
-      tts: "人、物、宠物，再乱的背景，几秒钟抠干净。",
+      tts: "免费、无水印、本地运行、批量随便跑——这就是装它的理由。",
     },
     { id: "08-cta", tts: "想看更多被低估的 AI 神器，记得点个关注！" },
   ],
