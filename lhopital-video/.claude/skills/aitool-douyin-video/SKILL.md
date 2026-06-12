@@ -14,6 +14,41 @@ call — the existing `AIToolPromo` (config-driven, hook → logo → 4 steps �
 compare → CTA) is the default base; adapt sections as needed.
 
 Full reference: `lhopital-video/src/compositions/AIToolPromo/README.md`.
+**Per-episode formats, reusable sections, the font fix, and asset recipes:**
+`references/episodes-and-styles.md` (read it before building a new episode).
+
+## Episodes & compositions (one tool ≠ one composition)
+
+Each tool gets the **format that best sells it** — a separate registered
+composition, not always `AIToolPromo`. Render by **composition id**:
+
+| EP | Tool | Composition id |
+| -- | ---- | -------------- |
+| 02 | pptx skill | `AIToolPromo` (config = pptx) |
+| 03 | canvas-design | `PosterPromo` |
+| 04 | rembg 抠图 | `CutoutPromo` (before/after wipe + batch wall) |
+| 05 | 简历优化 | `ResumePromo` |
+
+For a **new** episode, prefer adding its own composition + default config over
+overloading `AIToolPromo`. Compose from `sections/` (`HookCard`, `TerminalStream`,
+`BeforeAfter`, `CutoutBeat`, `BatchBeat`, `PosterBeat`, `Recap`, `SeriesBadge`,
+`CallToAction`) — see the reference for each.
+
+## ⚠️ Fonts must be loaded or text jitters
+
+If the user says **"文字一直在动"**: `FONT` names `"Noto Sans SC"` but the image
+lacks it, so each render worker falls back differently → per-frame jitter. Fixed
+repo-wide via `public/fonts/NotoSansCJKsc-*.otf` + `src/load-fonts.ts`
+(`FontFace` + `delayRender`, imported in `Root.tsx`). Always render `--crf 16`;
+render embedded document PNGs at ~2× on-screen width for crisp CJK. Verify with a
+frame-diff (≈0.000) — see the reference.
+
+## Choosing the tool
+
+Gate every pick with 「手机 / 微信 / 现成 App 能不能干?」 If yes → pick another
+tool **or** reframe around what apps can't (batch / free / no-watermark / local /
+unlimited). Demo assets must be **real tool output** (you may pick the
+best-showing sample). Details + honesty principle in the reference.
 
 ## Prerequisites
 
@@ -37,7 +72,7 @@ Full reference: `lhopital-video/src/compositions/AIToolPromo/README.md`.
 3. Generate narration (below).
 4. Point `AIToolPromo.tsx` (`import` + `defaultProps.config`) and the
    `CONFIGS` map in `generate-voiceover-aitool-minimax.ts` at the new config
-   (or register a new Composition).
+   (or register a new Composition — preferred for new episodes).
 5. Render + faststart (below). Spot-check frames, tune, deliver.
 
 Hook formula (series-consistent, pain-point): **「[做某事时]，[最烦的痛点]?」**
@@ -63,6 +98,7 @@ Reuse `public/aitool/napkin/bgm.mp3` across episodes for a consistent series
 sound (just point `musicUrl` at it). To make a new bed: edit the `PROMPT` in
 `generate-music-minimax.ts` (writes `public/bgm.mp3`), then trim/move:
 `npx remotion ffmpeg -i public/bgm.mp3 -t 40 -c copy public/aitool/<slug>/bgm.mp3 -y`.
+(Per-episode BGM example: `generate-music-rembg.ts`.)
 
 ## Audio mix — tune by dB, not raw volume
 
@@ -97,13 +133,14 @@ npx remotion ffmpeg -i public/aitool/<slug>/X.gif \
 ## Render + export
 
 ```bash
-npx remotion render AIToolPromo out/<name>.mp4 \
+npx remotion render <CompositionId> out/<name>.mp4 --crf 16 \
   --browser-executable="$(find /opt/pw-browsers -name headless_shell | head -1)" \
   --ignore-certificate-errors
 npx remotion ffmpeg -i out/<name>.mp4 -c copy -movflags +faststart out/<name>-douyin.mp4 -y
 ```
-Target: 1080×1920, 30fps, <10MB, duration ≈ narration (driven by
-`calculateMetadata`; adjust `SECTION_FLOOR` to change pacing).
+`--crf 16` keeps CJK text sharp. Target: 1080×1920, 30fps, <10MB, duration ≈
+narration (driven by `calculateMetadata`; adjust `SECTION_FLOOR` to change
+pacing). The font fix (above) is global — re-rendering any episode picks it up.
 
 ## Conventions / pitfalls
 
@@ -112,4 +149,9 @@ Target: 1080×1920, 30fps, <10MB, duration ≈ narration (driven by
   bumps `episode`.
 - MiniMax key/GroupId are environment secrets (not in the repo) — confirm
   they're set in a new environment.
-- Don't push >~40MB in one go (git server rejects); watch raw GIF/mp4 sizes.
+- `.claude/skills` (repo root) is a **symlink** to `lhopital-video/.claude/skills`
+  — one directory, not two copies. Edit the real path; never `rm -rf` through
+  the symlink.
+- `out/` is git-ignored (renders are reproducible); commit source + `public/`
+  assets. Don't push >~40MB in one go (git server rejects); watch raw GIF/mp4
+  sizes.
