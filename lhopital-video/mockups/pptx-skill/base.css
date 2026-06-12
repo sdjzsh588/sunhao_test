@@ -1,0 +1,34 @@
+/* Shared look for the pptx-skill episode mockups (screenshotted by Chromium). */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body {
+  font-family: "DejaVu Sans", "WenQuanYi Zen Hei", sans-serif;
+  background: #101418;
+  color: #e8eaed;
+  overflow: hidden;
+}
+.mono { font-family: "DejaVu Sans Mono", "WenQuanYi Zen Hei Mono", monospace; }
+
+/* macOS-ish window chrome */
+.window {
+  position: absolute; inset: 70px 80px;
+  background: #15191e;
+  border: 1px solid #2a3138;
+  border-radius: 28px;
+  box-shadow: 0 40px 120px rgba(0,0,0,.6);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.titlebar {
+  height: 92px; flex: none;
+  display: flex; align-items: center; gap: 18px;
+  padding: 0 40px;
+  background: #1b2026; border-bottom: 1px solid #2a3138;
+}
+.dot { width: 26px; height: 26px; border-radius: 50%; }
+.dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+.title { margin-left: 24px; font-size: 34px; color: #9aa4ad; }
+.body { flex: 1; padding: 56px 64px; display: flex; flex-direction: column; }
+
+.accent { color: #00ff88; }
+.claude { color: #d97757; }
+.dim { color: #7b858e; }

@@ -1,0 +1,153 @@
+import React from "react";
+import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { COLORS, FONT, SIZES } from "../styles";
+import { fadeIn, popScale, sectionOpacity, slideIn } from "../../../utils/animations";
+import { MediaFrame } from "./Media";
+import { TerminalStream } from "./TerminalStream";
+import { SlidesGrid } from "./SlidesGrid";
+import { BeforeAfter } from "./BeforeAfter";
+import type { AIToolConfigV3, MediaStep } from "../config/types";
+
+// One of the 4 tutorial steps: numbered badge + title/subtitle, then the step
+// visual — a streaming terminal (`step.terminal`), a grid of real slides
+// (`step.slides`), or the default framed media asset.
+export const StepSection: React.FC<{
+  step: MediaStep;
+  index: number;
+  dur: number;
+  ready: boolean;
+}> = ({ step, index, dur, ready }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const opacity = sectionOpacity(frame, dur);
+
+  const badgeScale = popScale(frame, fps, 2, { damping: 8, stiffness: 120 });
+  const headX = slideIn(frame, 6, 18, 120);
+  const mediaY = slideIn(frame, 16, 22, 60);
+  const mediaOpacity = fadeIn(frame, 16, 16);
+  const hlScale = popScale(frame, fps, 40, { damping: 9, stiffness: 120 });
+
+  return (
+    <AbsoluteFill
+      style={{
+        background: COLORS.bg,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 70,
+        gap: 44,
+        opacity,
+        fontFamily: FONT,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 26, transform: `translateX(${headX}px)` }}>
+        <div
+          style={{
+            width: SIZES.badge,
+            height: SIZES.badge,
+            borderRadius: "50%",
+            background: COLORS.accent,
+            color: COLORS.bg,
+            fontWeight: 900,
+            fontSize: 48,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transform: `scale(${badgeScale})`,
+            boxShadow: `0 0 40px ${COLORS.highlight}`,
+            flexShrink: 0,
+          }}
+        >
+          {index + 1}
+        </div>
+        <div style={{ textAlign: "left" }}>
+          <div style={{ fontSize: 60, fontWeight: 900, color: COLORS.text, lineHeight: 1.15 }}>
+            {step.title}
+          </div>
+          {step.subtitle ? (
+            <div style={{ fontSize: 36, color: COLORS.textMuted, marginTop: 8 }}>
+              {step.subtitle}
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      <div style={{ transform: `translateY(${mediaY}px)`, opacity: mediaOpacity }}>
+        {step.terminal ? (
+          <TerminalStream lines={step.terminal} />
+        ) : step.slides ? (
+          <SlidesGrid slides={step.slides} aspect={step.aspect} />
+        ) : step.beforeAfter ? (
+          <BeforeAfter
+            before={step.beforeAfter.before}
+            after={step.beforeAfter.after}
+            aspect={step.aspect}
+          />
+        ) : (
+          <MediaFrame
+            src={step.media}
+            aspect={step.aspect}
+            highlight={step.highlight}
+            highlightScale={hlScale}
+            ready={ready}
+          />
+        )}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// Tool-name section for v3: the Napkin logo on a clean white card + value line.
+export const ToolIntroV3: React.FC<{ config: AIToolConfigV3; dur: number }> = ({
+  config,
+  dur,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const { value } = config.script;
+  const logoScale = popScale(frame, fps, 0);
+  const opacity = sectionOpacity(frame, dur);
+  const valueY = slideIn(frame, 24, 20, 40);
+  const valueOpacity = fadeIn(frame, 24, 16);
+
+  return (
+    <AbsoluteFill
+      style={{
+        background: COLORS.bg,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 80,
+        gap: 56,
+        opacity,
+        fontFamily: FONT,
+      }}
+    >
+      <div
+        style={{
+          transform: `scale(${logoScale})`,
+          background: "#ffffff",
+          borderRadius: 28,
+          padding: "70px 80px",
+          boxShadow: `0 0 70px ${COLORS.highlight}`,
+        }}
+      >
+        <Img
+          src={staticFile(config.heroMedia)}
+          style={{ width: 720, height: "auto", display: "block" }}
+        />
+      </div>
+      <div
+        style={{
+          transform: `translateY(${valueY}px)`,
+          opacity: valueOpacity,
+          fontSize: SIZES.value,
+          fontWeight: 700,
+          color: COLORS.text,
+        }}
+      >
+        {value}
+      </div>
+    </AbsoluteFill>
+  );
+};

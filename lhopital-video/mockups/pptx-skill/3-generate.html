@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .body { font-size: 46px; line-height: 2.1; justify-content: center; }
+  .row { display: flex; align-items: center; gap: 26px; }
+  .done {
+    margin-top: 36px; font-size: 54px; font-weight: 700;
+    display: flex; align-items: center; gap: 26px;
+  }
+  .bar { margin-top: 30px; height: 22px; background: #1b2026; border-radius: 999px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #00ff88, #4cffae); border-radius: 999px; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="titlebar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="title mono">Claude Code</div></div>
+    <div class="body mono">
+      <div class="row"><span class="claude">⏺</span> 读取 季度总结.md <span class="dim">· 提炼重点</span></div>
+      <div class="row"><span class="claude">⏺</span> Skill: <b>pptx</b> <span class="dim">· 生成大纲（10 页）</span></div>
+      <div class="row"><span class="claude">⏺</span> 自动排版 <span class="dim">· 配色 · 图表 · 字体</span></div>
+      <div class="bar"><i></i></div>
+      <div class="done"><span class="accent">✓</span> 已生成 <span class="accent">季度总结.pptx</span> <span class="dim">· 10 页 · 42 秒</span></div>
+    </div>
+  </div>
+</body></html>

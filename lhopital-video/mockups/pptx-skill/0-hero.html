@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  body { background: #101418; }
+  .card {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 64px;
+  }
+  .icon {
+    width: 300px; height: 300px; border-radius: 64px;
+    background: linear-gradient(135deg, #d97757, #b85c3e);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 24px 80px rgba(217,119,87,.35);
+  }
+  /* slide glyph: a 16:9 slide with title + bullet bars */
+  .glyph { width: 180px; height: 120px; background: #fff; border-radius: 14px; padding: 22px; }
+  .glyph .t { width: 70%; height: 22px; background: #b85c3e; border-radius: 6px; }
+  .glyph .b { width: 100%; height: 12px; background: #e3e6ea; border-radius: 6px; margin-top: 14px; }
+  .glyph .b.s { width: 62%; }
+  .word .name { font-size: 150px; font-weight: 800; letter-spacing: -2px; }
+  .word .name small { font-size: 110px; font-weight: 700; color: #9aa4ad; }
+  .word .sub { margin-top: 22px; font-size: 52px; color: #9aa4ad; display: flex; align-items: center; gap: 28px; }
+  .badge {
+    font-size: 40px; font-weight: 700; color: #0a0a0a;
+    background: #00ff88; border-radius: 999px; padding: 10px 30px;
+  }
+</style></head>
+<body>
+  <div class="card">
+    <div class="icon"><div class="glyph"><div class="t"></div><div class="b"></div><div class="b s"></div></div></div>
+    <div class="word">
+      <div class="name">pptx <small>skill</small></div>
+      <div class="sub"><span>Claude 官方 · Agent Skills</span><span class="badge">★ 149k</span></div>
+    </div>
+  </div>
+</body></html>

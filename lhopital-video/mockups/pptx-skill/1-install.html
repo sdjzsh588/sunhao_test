@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .body { font-size: 50px; line-height: 2.0; justify-content: center; }
+  .prompt { font-size: 56px; margin-bottom: 28px; }
+  .caret { display: inline-block; width: 26px; height: 56px; background: #00ff88; vertical-align: -8px; }
+  .result { margin-top: 30px; }
+  .pkg { color: #e8eaed; }
+  ul { list-style: none; margin-top: 8px; }
+  li { padding-left: 56px; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="titlebar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="title mono">Claude Code</div></div>
+    <div class="body mono">
+      <div class="prompt"><span class="claude">&gt;</span> /plugin install <span class="accent">document-skills</span>@anthropic-agent-skills<span class="caret"></span></div>
+      <div class="result">
+        <div><span class="accent">✓</span> 已安装插件 <span class="pkg">document-skills</span></div>
+        <ul>
+          <li><span class="claude">·</span> <b>pptx</b> <span class="dim">— 生成 / 编辑 PowerPoint</span></li>
+          <li><span class="claude">·</span> docx <span class="dim">· Word</span>&nbsp;&nbsp;<span class="claude">·</span> xlsx <span class="dim">· Excel</span>&nbsp;&nbsp;<span class="claude">·</span> pdf</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body></html>

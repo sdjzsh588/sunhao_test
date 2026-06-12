@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .body { justify-content: center; gap: 44px; }
+  .file {
+    align-self: flex-start;
+    display: flex; align-items: center; gap: 24px;
+    background: #1b2026; border: 1px solid #2a3138; border-radius: 20px;
+    padding: 26px 38px; font-size: 42px;
+  }
+  .fileicon { width: 64px; height: 78px; background: #2f6fed; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 30px; font-weight: 700; }
+  .inputbox {
+    border: 3px solid #00ff88; border-radius: 24px; padding: 40px 44px;
+    font-size: 54px; line-height: 1.7;
+    box-shadow: 0 0 60px rgba(0,255,136,.15);
+  }
+  .caret { display: inline-block; width: 26px; height: 58px; background: #00ff88; vertical-align: -8px; }
+  .hint { font-size: 38px; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="titlebar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="title mono">Claude Code</div></div>
+    <div class="body">
+      <div class="file mono"><div class="fileicon">MD</div>季度总结.md <span class="dim">· 8.2 KB</span></div>
+      <div class="inputbox mono"><span class="claude">&gt;</span> 把 <span class="accent">@季度总结.md</span> 做成 10 页 PPT，深色商务风<span class="caret"></span></div>
+      <div class="hint dim">Word / Markdown / 一段大纲，都可以直接丢进来</div>
+    </div>
+  </div>
+</body></html>

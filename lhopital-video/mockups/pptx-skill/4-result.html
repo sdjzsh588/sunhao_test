@@ -1,0 +1,56 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .body { padding: 44px 56px; }
+  .grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .slide {
+    aspect-ratio: 16/9; border-radius: 16px; overflow: hidden;
+    background: linear-gradient(150deg, #1c2733, #121922);
+    border: 1px solid #2e3a46; padding: 34px 38px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  }
+  .slide.cover { background: linear-gradient(135deg, #16202b, #0e141b); align-items: flex-start; justify-content: center; }
+  .kicker { font-size: 22px; letter-spacing: 6px; color: #d97757; font-weight: 700; }
+  .h1 { font-size: 52px; font-weight: 800; margin-top: 14px; }
+  .h2 { font-size: 30px; font-weight: 700; margin-bottom: 18px; }
+  .line { height: 12px; background: #28323d; border-radius: 6px; margin-top: 12px; }
+  .line.s { width: 64%; }
+  /* bar chart */
+  .bars { flex: 1; display: flex; align-items: flex-end; gap: 22px; padding-top: 8px; }
+  .bars i { flex: 1; border-radius: 8px 8px 0 0; background: #31506b; }
+  .bars i.hot { background: #d97757; }
+  /* KPI */
+  .kpis { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .kpi { background: #1a242f; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; padding: 0 22px; }
+  .kpi b { font-size: 42px; color: #00ff88; } .kpi span { font-size: 20px; color: #7b858e; margin-top: 6px; }
+  /* donut */
+  .donutwrap { flex: 1; display: flex; align-items: center; gap: 30px; }
+  .donut { width: 150px; height: 150px; border-radius: 50%;
+    background: conic-gradient(#d97757 0 62%, #31506b 62% 86%, #28323d 86% 100%); position: relative; }
+  .donut::after { content: ""; position: absolute; inset: 38px; border-radius: 50%; background: #141c25; }
+  .legend { flex: 1; } .legend .line { margin-top: 16px; }
+  /* timeline */
+  .tl { flex: 1; display: flex; align-items: center; gap: 0; }
+  .node { width: 26px; height: 26px; border-radius: 50%; background: #d97757; flex: none; }
+  .seg { flex: 1; height: 8px; background: #28323d; }
+  .statusbar { height: 64px; flex: none; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; font-size: 28px; color: #7b858e; background: #1b2026; border-top: 1px solid #2a3138; }
+</style></head>
+<body>
+  <div class="window">
+    <div class="titlebar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="title">季度总结.pptx — 幻灯片浏览</div></div>
+    <div class="body">
+      <div class="grid">
+        <div class="slide cover"><div class="kicker">2026 · Q2</div><div class="h1">季度总结</div><div class="line s" style="width:38%"></div></div>
+        <div class="slide"><div class="h2">本季亮点</div><div class="line"></div><div class="line s"></div><div class="line"></div><div class="line s"></div></div>
+        <div class="slide"><div class="h2">营收走势</div><div class="bars"><i style="height:34%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:70%"></i><i class="hot" style="height:92%"></i></div></div>
+        <div class="slide"><div class="h2">核心指标</div><div class="kpis"><div class="kpi"><b>+38%</b><span>营收增长</span></div><div class="kpi"><b>12.6万</b><span>新增用户</span></div><div class="kpi"><b>98.2%</b><span>交付准时率</span></div><div class="kpi"><b>4.8</b><span>满意度</span></div></div></div>
+        <div class="slide"><div class="h2">业务构成</div><div class="donutwrap"><div class="donut"></div><div class="legend"><div class="line"></div><div class="line s"></div><div class="line s" style="width:46%"></div></div></div></div>
+        <div class="slide"><div class="h2">下季度路线</div><div class="tl"><div class="node"></div><div class="seg"></div><div class="node" style="background:#31506b"></div><div class="seg"></div><div class="node" style="background:#28323d"></div></div><div class="line s"></div><div class="line s" style="width:42%"></div></div>
+      </div>
+    </div>
+    <div class="statusbar"><span>幻灯片 1 - 6 / 共 10 张</span><span>由 Claude · pptx skill 生成</span></div>
+  </div>
+</body></html>
